@@ -5,20 +5,21 @@ import pathlib
 import numpy as np
 import typing as ty
 
+from lorapy.datafile._base_file import BaseDatFile
 from lorapy.datafile import encoding
 from lorapy.utils import filename as filename_utils
 
 
 
-class DatFile:
+class DatFile(BaseDatFile):
 
     _pattern_bw =   r'BW(\d)'
     _pattern_sf =   r'SF(\d{1,})'
     _pattern_att =  r'Att(\d{1,})'
 
     def __init__(self, file_path: pathlib.Path):
-
-        self.file_path = file_path
+        # inherit
+        BaseDatFile.__init__(self, file_path)
 
         # file params
         self._file_bw, self._file_sf, self._file_att = None, None, None
@@ -31,7 +32,6 @@ class DatFile:
         # init tasks
         # TODO: disabling actions until .load() is called, need to confirm
         # self._compute_file_params()
-
 
     # TODO: add __repr__ and __str__ methods
 
