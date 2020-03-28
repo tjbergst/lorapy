@@ -22,8 +22,8 @@ class DatFile:
 
         # file params
         self._file_bw, self._file_sf, self._file_att = None, None, None
-        self.samp_per_sym = None
-        self.packet_len = None
+        self._samp_per_sym = None
+        self._packet_len = None
 
         # data
         self.data = None
@@ -48,6 +48,14 @@ class DatFile:
     def att(self) -> int:
         return self._file_att
 
+    @property
+    def samp_per_sym(self) -> int:
+        return self._samp_per_sym
+
+    @property
+    def packet_len(self) -> int:
+        return self._packet_len
+
 
     def load(self) -> None:
         self.data = self._load_file()
@@ -69,6 +77,6 @@ class DatFile:
         self._file_sf = filename_utils.extract_value(self.name, self._pattern_sf)
         self._file_att = filename_utils.extract_value(self.name, self._pattern_att)
 
-        self.samp_per_sym, self.packet_len = encoding.compute_params(self)
+        self._samp_per_sym, self._packet_len = encoding.compute_params(self)
 
 
