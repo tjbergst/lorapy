@@ -34,7 +34,12 @@ class DatLoader:
 
     @property
     def filegen(self) -> ty.Generator:
-        return self._path_utils.glob_files(self.data_dir, self._glob_pattern)
+        _file_generator = self._path_utils.glob_files(self.data_dir, self._glob_pattern)
+
+        if self._autoload:
+            return (self._load_dat_file(path) for path in _file_generator)
+
+        return _file_generator
 
 
     @property
