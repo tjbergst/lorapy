@@ -72,7 +72,7 @@ class DatLoader:
             raise FileNotFoundError(f'no data files [{self._glob_pattern}] found in directory {data_dir}')
 
         logger.info(f'found {len(file_list)} data file(s)')
-        self.data_file = file_list[0]
+        self.data_file = self._load_dat_file(file_list[0]) if self._autoload else file_list[0]
         return data_dir
 
 
