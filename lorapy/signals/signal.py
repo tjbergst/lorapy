@@ -6,6 +6,7 @@ import numpy as np
 import typing as ty
 
 from lorapy.signals._base_signal import BaseLoraSignal
+from lorapy.signals.stats import SignalStats
 from lorapy.datafile.file import DatFile  # TODO: probably will cause circular import issue
 
 
@@ -16,7 +17,8 @@ class LoraSignal(BaseLoraSignal):
         # inherit
         BaseLoraSignal.__init__(self)
 
-        # signal
+        # signal stats
+        self.stats = SignalStats(datafile)
 
 
 
