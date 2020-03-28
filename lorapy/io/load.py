@@ -7,7 +7,7 @@ import pathlib
 import typing as ty
 
 from lorapy.common import paths
-
+from lorapy.data.file import DatFile
 
 
 class DatLoader:
@@ -16,7 +16,9 @@ class DatLoader:
 
     _path_utils = paths
 
-    def __init__(self, data_path: ty.Union[pathlib.Path, str]):
+    def __init__(self, data_path: ty.Union[pathlib.Path, str], autoload: bool=True):
+
+        self._autoload = autoload
 
         self.data_file: pathlib.Path() = None
         self.data_dir: pathlib.Path() = self._validate_data_path(data_path)
@@ -40,7 +42,6 @@ class DatLoader:
         return list(self.filegen)
 
 
-
     def _validate_data_path(self, path: ty.Union[pathlib.Path, str]) -> pathlib.Path:
         if not isinstance(path, pathlib.Path):
             path = pathlib.Path(path)
@@ -50,12 +51,12 @@ class DatLoader:
 
         if path.is_file():
             logger.info(f'validated data file at {path}')
-            self.data_file = path
+            self.data_file = self._load_dat_file(path) if self._autoload else path
+
             logger.debug(f'set data directory: {path.parent}')
             return path.parent
 
         return self._process_data_dir(path)
-
 
 
     def _process_data_dir(self, data_dir: pathlib.Path) -> pathlib.Path:
@@ -68,6 +69,11 @@ class DatLoader:
         logger.info(f'found {len(file_list)} data file(s)')
         self.data_file = file_list[0]
         return data_dir
+
+
+    @staticmethod
+    def _load_dat_file(filepath: pathlib.Path) -> DatFile:
+        return DatFile(filepath)
 
 
 
