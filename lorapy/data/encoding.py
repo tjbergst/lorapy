@@ -2,18 +2,18 @@
 
 from loguru import logger
 import numpy as np
+import typing as ty
 
 from lorapy.common import constants
 from lorapy.data.file import DatFile
 
 
-def compute_params(file: DatFile):
+def compute_params(file: DatFile) -> ty.Tuple[int, int]:
     _samp_per_sym = _samples_per_sym(file)
     _packet_len = _packet_length(_samp_per_sym)
     logger.debug(f'computed samples per symbol: {_samp_per_sym} and packet length: {_packet_len}')
 
-    file.samp_per_sym = _samp_per_sym
-    file.packet_len = _packet_len
+    return _samp_per_sym, _packet_len
 
 
 def _samples_per_sym(file: DatFile) -> int:
