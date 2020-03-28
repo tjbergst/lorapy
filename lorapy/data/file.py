@@ -21,9 +21,12 @@ class DatFile:
 
         self.file_path = file_path
 
-        # filename params
+        # file params
         self._file_bw, self._file_sf, self._file_att = self._parse_filename_params()
+        self.samp_per_sym = None
+        self.packet_len = None
 
+        # data
         self.data = None
 
 
