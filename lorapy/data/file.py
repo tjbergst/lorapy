@@ -29,7 +29,7 @@ class DatFile:
         self.data = None
 
         # init tasks
-        self._parse_filename_params()
+        self._compute_file_params()
 
 
     @property
@@ -64,7 +64,7 @@ class DatFile:
             return signal
 
 
-    def _parse_filename_params(self) -> None:
+    def _compute_file_params(self) -> None:
         self._file_bw = filename_utils.extract_value(self.name, self._pattern_bw)
         self._file_sf = filename_utils.extract_value(self.name, self._pattern_sf)
         self._file_att = filename_utils.extract_value(self.name, self._pattern_att)
