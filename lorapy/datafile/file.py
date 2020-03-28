@@ -33,6 +33,8 @@ class DatFile:
         # self._compute_file_params()
 
 
+    # TODO: add __repr__ and __str__ methods
+
     @property
     def name(self) -> str:
         return self.file_path.name
