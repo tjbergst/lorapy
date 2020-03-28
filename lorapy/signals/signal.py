@@ -2,14 +2,17 @@
 
 
 from loguru import logger
-import numpy as np 
+import numpy as np
 import typing as ty
 
+from lorapy.signals._base_signal import BaseLoraSignal
 
 
-class LoRaSignal:
+
+class LoraSignal(BaseLoraSignal):
 
     def __init__(self, signal: np.array):
-        pass
+        # inherit
+        BaseLoraSignal.__init__(self, signal)
 
 
