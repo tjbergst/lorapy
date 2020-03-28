@@ -77,5 +77,6 @@ class DatFile(BaseDatFile):
         self._file_att = filename_utils.extract_value(self.name, self._pattern_att)
 
         self._samp_per_sym, self._packet_len = encoding.compute_params(self)
+        # TODO: look into incoporating signal stats at this point?
 
 
