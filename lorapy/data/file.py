@@ -16,8 +16,6 @@ class DatFile:
     _pattern_sf =   r'SF(\d{1,})'
     _pattern_att =  r'Att(\d{1,})'
 
-    _filename_utils = filename_utils
-
     def __init__(self, file_path: pathlib.Path):
 
         self.file_path = file_path
@@ -67,9 +65,9 @@ class DatFile:
 
 
     def _parse_filename_params(self) -> None:
-        self._file_bw = self._filename_utils.extract_value(self.name, self._pattern_bw)
-        self._file_sf = self._filename_utils.extract_value(self.name, self._pattern_sf)
-        self._file_att = self._filename_utils.extract_value(self.name, self._pattern_att)
+        self._file_bw = filename_utils.extract_value(self.name, self._pattern_bw)
+        self._file_sf = filename_utils.extract_value(self.name, self._pattern_sf)
+        self._file_att = filename_utils.extract_value(self.name, self._pattern_att)
 
         self.samp_per_sym, self.packet_len = encoding.compute_params(self)
 
