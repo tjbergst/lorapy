@@ -1,4 +1,4 @@
-# signal normalization
+# signals normalization
 
 
 
