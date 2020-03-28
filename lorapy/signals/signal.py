@@ -12,8 +12,14 @@ from lorapy.datafile.file import DatFile  # TODO: probably will cause circular i
 
 class LoraSignal(BaseLoraSignal):
 
-    def __init__(self, signal: np.array):
+    def __init__(self, datafile: DatFile):
         # inherit
-        BaseLoraSignal.__init__(self, signal)
+        BaseLoraSignal.__init__(self)
+
+        # signal
 
 
+
+
+    def _ingest_dat_file(self, datafile: DatFile):
+        pass
