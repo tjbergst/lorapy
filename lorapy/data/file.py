@@ -29,7 +29,8 @@ class DatFile:
         self.data = None
 
         # init tasks
-        self._compute_file_params()
+        # TODO: disabling actions until .load() is called, need to confirm
+        # self._compute_file_params()
 
 
     @property
@@ -58,8 +59,9 @@ class DatFile:
 
 
     def load(self) -> None:
+        self._compute_file_params()
         self.data = self._load_file()
-        logger.info(f'loaded {len(self.data)} samples from file')
+        logger.info(f'loaded {self.data.size} samples from file')
 
 
     def _load_file(self) -> np.array:
