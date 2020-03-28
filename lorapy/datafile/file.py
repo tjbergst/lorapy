@@ -1,11 +1,11 @@
-# data file
+# datafile file
 
 from loguru import logger
 import pathlib
 import numpy as np
 import typing as ty
 
-from lorapy.data import encoding
+from lorapy.datafile import encoding
 from lorapy.utils import filename as filename_utils
 
 
@@ -25,7 +25,7 @@ class DatFile:
         self._samp_per_sym = None
         self._packet_len = None
 
-        # data
+        # datafile
         self.data = None
 
         # init tasks

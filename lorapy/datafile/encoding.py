@@ -5,7 +5,7 @@ import numpy as np
 import typing as ty
 
 from lorapy.common import constants
-from lorapy.data.file import DatFile
+from lorapy.datafile.file import DatFile
 
 
 def compute_params(file: DatFile) -> ty.Tuple[int, int]:
