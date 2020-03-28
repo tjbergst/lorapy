@@ -17,7 +17,8 @@ bw_values = {
     9: 500e3,
 }
 
-
+# TODO: find better name
+packet_length_scalar = 30.25
 
 Fs = int(1e6)
 
