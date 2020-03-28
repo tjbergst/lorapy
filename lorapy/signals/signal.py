@@ -18,7 +18,7 @@ class LoraSignal(BaseLoraSignal):
         BaseLoraSignal.__init__(self)
 
         # signal
-        self._raw_signal = datafile.data
+        self._raw_signal = datafile.data[:]
 
         # signal stats
         self.stats = SignalStats(datafile)
