@@ -13,7 +13,7 @@ class BaseDatFile:
 
 
     def __repr__(self):
-        return self.name
+        return f"{self.__class__.__name__}('{self.name}')"
         # TODO: note, can add more params like bw, sf, etc but would require a .load()
 
 
