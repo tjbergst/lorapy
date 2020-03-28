@@ -7,6 +7,7 @@ import typing as ty
 
 from lorapy.datafile._base_file import BaseDatFile
 from lorapy.datafile import encoding
+from lorapy.signals.signal import LoraSignal
 from lorapy.utils import filename as filename_utils
 
 
