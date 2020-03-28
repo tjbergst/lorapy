@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    .error {
+        color: red;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm//vega@5"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm//vega-lite@4.0.2"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm//vega-embed@6"></script>
+</head>
+<body>
+  <div id="vis"></div>
+  <script>
+    (function(vegaEmbed) {
+      var spec = {"config": {"view": {"continuousWidth": 400, "continuousHeight": 300, "stroke": null}}, "layer": [{"mark": {"type": "circle", "opacity": 0.6, "size": 50}, "encoding": {"color": {"type": "nominal", "field": "name", "scale": {"scheme": "tableau20"}}, "latitude": {"field": "lat", "type": "quantitative"}, "longitude": {"field": "lon", "type": "quantitative"}, "tooltip": {"type": "nominal", "field": "name"}}}, {"mark": {"type": "text", "align": "center", "baseline": "bottom", "dx": 0, "dy": -5, "fontSize": 10}, "encoding": {"latitude": {"field": "lat_plot", "type": "quantitative"}, "longitude": {"field": "lon_plot", "type": "quantitative"}, "text": {"type": "nominal", "field": "name"}}}], "data": {"name": "data-506044b5026f770496155c8023aa5a86"}, "height": 700, "projection": {"type": "albers"}, "width": 500, "$schema": "https://vega.github.io/schema/vega-lite/v4.0.2.json", "datasets": {"data-506044b5026f770496155c8023aa5a86": [{"lat": 47.641746116666674, "lon": -122.13970368333332, "rssi": -87, "SF": 12, "BW": 9, "name": "location-0", "x_adj": 0, "y_adj": 0, "lat_plot": 47.641746116666674, "lon_plot": -122.13970368333332}, {"lat": 47.64200583333333, "lon": -122.14119843333334, "rssi": -115, "SF": 12, "BW": 9, "name": "location-1", "x_adj": -9, "y_adj": -4, "lat_plot": 47.64160583333333, "lon_plot": -122.14209843333335}, {"lat": 47.645735516666676, "lon": -122.14181134999998, "rssi": -129, "SF": 12, "BW": 9, "name": "location-2", "x_adj": 10, "y_adj": -2, "lat_plot": 47.645535516666676, "lon_plot": -122.14081134999998}, {"lat": 47.6451564, "lon": -122.13819428333333, "rssi": -129, "SF": 12, "BW": 9, "name": "location-3", "x_adj": 11, "y_adj": -3, "lat_plot": 47.644856399999995, "lon_plot": -122.13709428333334}, {"lat": 47.64788463333333, "lon": -122.13770626666668, "rssi": -128, "SF": 12, "BW": 9, "name": "location-4", "x_adj": -8, "y_adj": -5, "lat_plot": 47.647384633333324, "lon_plot": -122.13850626666668}, {"lat": 47.64902155, "lon": -122.14218468333333, "rssi": -126, "SF": 12, "BW": 9, "name": "location-5", "x_adj": 0, "y_adj": 0, "lat_plot": 47.64902155, "lon_plot": -122.14218468333333}, {"lat": 47.6519133535415, "lon": -122.14124879190584, "rssi": -140, "SF": 12, "BW": 7, "name": "location-6", "x_adj": -8, "y_adj": -5, "lat_plot": 47.6514133535415, "lon_plot": -122.14204879190584}, {"lat": 47.65192425382816, "lon": -122.14120784481692, "rssi": -137, "SF": 12, "BW": 8, "name": "location-7", "x_adj": 8, "y_adj": 2, "lat_plot": 47.65212425382816, "lon_plot": -122.14040784481692}, {"lat": 47.654193271383505, "lon": -122.14030990657797, "rssi": -140, "SF": 12, "BW": 8, "name": "location-8", "x_adj": 0, "y_adj": 0, "lat_plot": 47.654193271383505, "lon_plot": -122.14030990657797}, {"lat": 47.6568559841464, "lon": -122.14092214876202, "rssi": -145, "SF": 12, "BW": 7, "name": "location-9", "x_adj": 9, "y_adj": 2, "lat_plot": 47.657055984146396, "lon_plot": -122.14002214876201}, {"lat": 47.65645819801046, "lon": -122.1414173676043, "rssi": -145, "SF": 12, "BW": 7, "name": "location-10", "x_adj": -8, "y_adj": -1, "lat_plot": 47.65635819801046, "lon_plot": -122.1422173676043}, {"lat": 47.6575144165449, "lon": -122.14149146668811, "rssi": -141, "SF": 12, "BW": 6, "name": "location-11", "x_adj": 0, "y_adj": 0, "lat_plot": 47.6575144165449, "lon_plot": -122.14149146668811}, {"lat": 47.65827774385282, "lon": -122.14159648578442, "rssi": -145, "SF": 12, "BW": 6, "name": "location-12", "x_adj": -10, "y_adj": -5, "lat_plot": 47.65777774385282, "lon_plot": -122.14259648578442}, {"lat": 47.65834086666667, "lon": -122.14156053333333, "rssi": -142, "SF": 12, "BW": 3, "name": "location-13", "x_adj": 10, "y_adj": 2, "lat_plot": 47.65854086666667, "lon_plot": -122.14056053333333}, {"lat": 47.655170983333335, "lon": -122.14358155, "rssi": -147, "SF": 12, "BW": 3, "name": "location-14", "x_adj": 0, "y_adj": 0, "lat_plot": 47.655170983333335, "lon_plot": -122.14358155}, {"lat": 47.642047133333335, "lon": -122.14114473333333, "rssi": -101, "SF": 7, "BW": 9, "name": "location-15", "x_adj": 9, "y_adj": 2, "lat_plot": 47.642247133333335, "lon_plot": -122.14024473333333}, {"lat": 47.644862033333325, "lon": -122.14247085000001, "rssi": -130, "SF": 9, "BW": 9, "name": "location-16", "x_adj": 0, "y_adj": 0, "lat_plot": 47.644862033333325, "lon_plot": -122.14247085000001}, {"lat": 47.645739683333346, "lon": -122.14187858333334, "rssi": -126, "SF": 9, "BW": 9, "name": "location-17", "x_adj": 11, "y_adj": 0, "lat_plot": 47.645739683333346, "lon_plot": -122.14077858333334}, {"lat": 47.645741516666675, "lon": -122.14187855, "rssi": -128, "SF": 8, "BW": 9, "name": "location-18", "x_adj": -10, "y_adj": -2, "lat_plot": 47.645541516666675, "lon_plot": -122.14287855}, {"lat": 47.645130249999994, "lon": -122.13816931666668, "rssi": -113, "SF": 8, "BW": 9, "name": "location-19", "x_adj": 11, "y_adj": 3, "lat_plot": 47.64543025, "lon_plot": -122.13706931666668}, {"lat": 47.64512941666667, "lon": -122.138172, "rssi": -116, "SF": 7, "BW": 9, "name": "location-20", "x_adj": -10, "y_adj": -2, "lat_plot": 47.64492941666667, "lon_plot": -122.139172}, {"lat": 47.648307666666675, "lon": -122.13744040000002, "rssi": -128, "SF": 12, "BW": 9, "name": "location-21", "x_adj": 10, "y_adj": 1, "lat_plot": 47.64840766666668, "lon_plot": -122.13644040000001}, {"lat": 47.649132316666666, "lon": -122.13748775, "rssi": -131, "SF": 11, "BW": 9, "name": "location-22", "x_adj": 10, "y_adj": 1, "lat_plot": 47.64923231666667, "lon_plot": -122.13648775}, {"lat": 47.64894488333333, "lon": -122.13738295, "rssi": -136, "SF": 12, "BW": 9, "name": "location-23", "x_adj": -10, "y_adj": -4, "lat_plot": 47.64854488333333, "lon_plot": -122.13838295000001}, {"lat": 47.65081421111258, "lon": -122.14015336943993, "rssi": -139, "SF": 12, "BW": 5, "name": "location-24", "x_adj": 0, "y_adj": 0, "lat_plot": 47.65081421111258, "lon_plot": -122.14015336943993}]}};
+      var embedOpt = {"mode": "vega-lite"};
+
+      function showError(el, error){
+          el.innerHTML = ('<div class="error" style="color:red;">'
+                          + '<p>JavaScript Error: ' + error.message + '</p>'
+                          + "<p>This usually means there's a typo in your chart specification. "
+                          + "See the javascript console for the full traceback.</p>"
+                          + '</div>');
+          throw error;
+      }
+      const el = document.getElementById('vis');
+      vegaEmbed("#vis", spec, embedOpt)
+        .catch(error => showError(el, error));
+    })(vegaEmbed);
+
+  </script>
+</body>
+</html>

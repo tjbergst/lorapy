@@ -1,0 +1,19 @@
+# osx
+.DS_Store
+
+# pycharm
+.idea/
+
+# vscode
+.vscode/
+
+# python
+*.pyc
+__pycache__/
+.ipynb_checkpoints/
+
+# dev
+dev/
+
+# data
+/data/
