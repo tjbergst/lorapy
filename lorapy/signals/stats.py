@@ -8,7 +8,6 @@ class SignalStats:
 
     def __init__(self, datafile: DatFile):
 
-        self._signal =          datafile.data
         self._filename =        datafile.name
 
         self._bw =              datafile.bw
