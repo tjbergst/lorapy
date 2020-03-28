@@ -33,12 +33,6 @@ class DatFile(BaseDatFile):
         # TODO: disabling actions until .load() is called, need to confirm
         # self._compute_file_params()
 
-    # TODO: add __repr__ and __str__ methods
-
-    @property
-    def name(self) -> str:
-        return self.file_path.name
-
     @property
     def bw(self) -> int:
         return self._file_bw
