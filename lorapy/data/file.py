@@ -5,6 +5,7 @@ import pathlib
 import numpy as np
 import typing as ty
 
+from lorapy.data import encoding
 from lorapy.utils import filename as filename_utils
 
 
@@ -22,12 +23,15 @@ class DatFile:
         self.file_path = file_path
 
         # file params
-        self._file_bw, self._file_sf, self._file_att = self._parse_filename_params()
+        self._file_bw, self._file_sf, self._file_att = None, None, None
         self.samp_per_sym = None
         self.packet_len = None
 
         # data
         self.data = None
+
+        # init tasks
+        self._parse_filename_params()
 
 
     @property
@@ -62,10 +66,11 @@ class DatFile:
             return signal
 
 
-    def _parse_filename_params(self) -> ty.Tuple[int, int, int]:
-        _bw = self._filename_utils.extract_value(self.name, self._pattern_bw)
-        _sf = self._filename_utils.extract_value(self.name, self._pattern_sf)
-        _att = self._filename_utils.extract_value(self.name, self._pattern_att)
+    def _parse_filename_params(self) -> None:
+        self._file_bw = self._filename_utils.extract_value(self.name, self._pattern_bw)
+        self._file_sf = self._filename_utils.extract_value(self.name, self._pattern_sf)
+        self._file_att = self._filename_utils.extract_value(self.name, self._pattern_att)
 
-        return _bw, _sf, _att
+        self.samp_per_sym, self.packet_len = encoding.compute_params(self)
+
 
