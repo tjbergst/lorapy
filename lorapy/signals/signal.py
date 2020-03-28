@@ -23,3 +23,6 @@ class LoraSignal(BaseLoraSignal):
 
     def _ingest_dat_file(self, datafile: DatFile):
         pass
+
+
+
