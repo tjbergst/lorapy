@@ -1,12 +1,12 @@
 # signal stats
 
 
-from lorapy.datafile.file import DatFile
+# from lorapy.datafile.file import DatFile  # TODO: circ import issue
 
 
 class SignalStats:
 
-    def __init__(self, datafile: DatFile):
+    def __init__(self, datafile: 'DatFile'):
 
         self._filename =        datafile.name
 

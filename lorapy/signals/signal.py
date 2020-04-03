@@ -7,7 +7,7 @@ import typing as ty
 
 from lorapy.signals._base_signal import BaseLoraSignal
 from lorapy.signals.stats import SignalStats
-from lorapy.datafile.file import DatFile  # TODO: probably will cause circular import issue
+# from lorapy.datafile.file import DatFile  # TODO: circ import issue
 
 
 
