@@ -13,7 +13,7 @@ from lorapy.signals.stats import SignalStats
 
 class LoraSignal(BaseLoraSignal):
 
-    def __init__(self, datafile: DatFile):
+    def __init__(self, datafile: 'DatFile'):
         # inherit
         BaseLoraSignal.__init__(self)
 
@@ -38,7 +38,5 @@ class LoraSignal(BaseLoraSignal):
         pass
 
 
-    def _ingest_dat_file(self, datafile: DatFile):
-        pass
 
 
