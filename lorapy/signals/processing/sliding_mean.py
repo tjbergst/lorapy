@@ -41,6 +41,7 @@ class SlidingMeanProcessor:
 
         all_indexes = []
         slice_num = 0
+        logger.info(f'scanning signal for padding locations..')
 
         while True:
             if slice_num % 50 == 0:
