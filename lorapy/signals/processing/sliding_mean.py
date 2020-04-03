@@ -8,12 +8,14 @@ import numpy as np
 import typing as ty
 
 from lorapy.common import constants
+from lorapy.signals.processing import utils
 from lorapy.signals.signal import LoraSignal  # TODO: circ import issue
 
 
 class SlidingMeanProcessor:
 
     _const = constants
+    _utils = utils
 
     def __init__(self, signal: LoraSignal):
 
@@ -55,8 +57,9 @@ class SlidingMeanProcessor:
                 all_indexes.append(index)
                 slice_num += 1
 
-        logger.info(f'found [{len(all_indexes)} // {None}] packet locations')
-        return all_indexes
+        cleaned_indexes = self._utils.clean_index_list(all_indexes, threshold=0, shift=True)
+        logger.info(f'found [{len(all_indexes)} // {len(cleaned_indexes)}] packet locations')
+        return cleaned_indexes
 
 
     def _scan_slice(self, signal: np.array, _slice_num: int, overlap: float) -> int:
@@ -106,5 +109,4 @@ class SlidingMeanProcessor:
         # noinspection PyTypeChecker
         _min_index = indice_list[argmin]
         return _min_index
-
 
