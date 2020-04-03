@@ -33,6 +33,10 @@ class LoraSignal(BaseLoraSignal):
         return np.abs(self.real_signal)
 
 
+    def extract_packets(self) -> np.ndarray:
+        """ extract all packets and return array of [packet_len, num_packets] """
+        pass
+
 
     def _ingest_dat_file(self, datafile: DatFile):
         pass
