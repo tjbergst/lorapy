@@ -41,8 +41,20 @@ class SlidingMeanProcessor:
         :param overlap: amount of overlap for `_slide_and_mean` to use
         :return: absolute index of minimum (i.e. padding location)
         """
-        pass
 
+        packet_len = self._lora_signal.stats.packet_len
+        start_adj, stop_adj = 0.25, 1.5
+
+        start, stop = int((slice_num + start_adj) * packet_len), int((slice_num + stop_adj) * packet_len)
+
+        if stop > signal.size:
+            logger.debug('reached end of signal')
+            raise StopIteration('end of signal')
+
+        min_index = self._slide_and_mean(signal[start:stop], overlap)
+        abs_index = start + min_index
+
+        return abs_index
 
 
     def _slide_and_mean(self, data_slice: np.array, overlap: float) -> int:
@@ -63,7 +75,7 @@ class SlidingMeanProcessor:
         ])
 
         # noinspection PyTypeChecker
-        min_index = indice_list[argmin]
-        return min_index
+        _min_index = indice_list[argmin]
+        return _min_index
 
 
