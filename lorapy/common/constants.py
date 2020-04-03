@@ -20,6 +20,8 @@ bw_values = {
 # TODO: find better name
 packet_length_scalar = 30.25
 
+padding_length = 17_000
+
 Fs = int(1e6)
 
 
