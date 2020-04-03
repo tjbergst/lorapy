@@ -39,21 +39,33 @@ class SlidingMeanProcessor:
         :return: list of padding indexes
         """
 
-        pass
+        all_indexes = []
+        slice_num = 0
+
+        while True:
+            if slice_num % 50 == 0:
+                logger.debug(f'iteration {slice_num}')
+
+            try:
+                index = self._scan_slice(signal, slice_num, overlap)
+            except StopIteration:
+                break
+            else:
+                all_indexes.append(index)
+                slice_num += 1
+
+        logger.info(f'found [{len(all_indexes)} // {None}] packet locations')
+        return all_indexes
 
 
-
-
-
-
-    def _scan_slice(self, signal: np.array, slice_num: int, overlap: float) -> int:
+    def _scan_slice(self, signal: np.array, _slice_num: int, overlap: float) -> int:
         """
         calculates the start and stop indexes for the slice to be scanned and
         then finds the minimum index via `_slide_and_mean`
         returns the absolute index
 
         :param signal: real abs lora signal
-        :param slice_num: iteration num used to calculate start and stop indexes
+        :param _slice_num: iteration num used to calculate start and stop indexes
         :param overlap: amount of overlap for `_slide_and_mean` to use
         :return: absolute index of minimum (i.e. padding location)
         """
@@ -61,7 +73,7 @@ class SlidingMeanProcessor:
         packet_len = self._lora_signal.stats.packet_len
         start_adj, stop_adj = 0.25, 1.5
 
-        start, stop = int((slice_num + start_adj) * packet_len), int((slice_num + stop_adj) * packet_len)
+        start, stop = int((_slice_num + start_adj) * packet_len), int((_slice_num + stop_adj) * packet_len)
 
         if stop > signal.size:
             logger.debug('reached end of signal')
