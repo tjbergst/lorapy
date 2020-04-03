@@ -28,9 +28,25 @@ class SlidingMeanProcessor:
 
 
 
+    def _find_all_mindices(self, signal: np.array, overlap: float=0.5) -> ty.List[int]:
+        """
+        iterates over signal, scans each slice, and extracts the indices of all
+        padding locations
+        returns a list of padding indexes
+
+        :param signal: real abs lora signal
+        :param overlap: amount of overlap for `_slide_and_mean` to use
+        :return: list of padding indexes
+        """
+
+        pass
 
 
-    def _scan_slice(self, signal: np.array, slice_num: int, overlap: float=0.5) -> int:
+
+
+
+
+    def _scan_slice(self, signal: np.array, slice_num: int, overlap: float) -> int:
         """
         calculates the start and stop indexes for the slice to be scanned and
         then finds the minimum index via `_slide_and_mean`
@@ -57,7 +73,7 @@ class SlidingMeanProcessor:
         return abs_index
 
 
-    def _slide_and_mean(self, data_slice: np.array, overlap: float) -> int:
+    def _slide_and_mean(self, data_slice: np.array, overlap: float=0.5) -> int:
         """ iterates over `data_slice` with provided `overlap` and returns
             the start index of the window with minimum mean
 
