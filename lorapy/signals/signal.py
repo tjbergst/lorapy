@@ -18,16 +18,23 @@ class LoraSignal(BaseLoraSignal):
         BaseLoraSignal.__init__(self)
 
         # signal
-        self._raw_signal = datafile.data[:]
+        self._raw_signal: np.array = datafile.data[:]
 
         # signal stats
         self.stats = SignalStats(datafile)
 
 
+    @property
+    def real_signal(self) -> np.array:
+        return np.real(self._raw_signal)
+
+    @property
+    def real_abs_signal(self) -> np.array:
+        return np.abs(self.real_signal)
+
 
 
     def _ingest_dat_file(self, datafile: DatFile):
         pass
-
 
 
