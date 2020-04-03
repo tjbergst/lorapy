@@ -61,6 +61,13 @@ class DatFile(BaseDatFile):
         logger.info(f'loaded {self.data.size} samples from file')
 
 
+    def to_signal(self) -> LoraSignal:
+        if self._file_bw is None:
+            self.load()
+
+        return LoraSignal(self)
+
+
     def _load_file(self) -> np.array:
         try:
             signal = np.fromfile(self.file_path, dtype=np.complex64)
