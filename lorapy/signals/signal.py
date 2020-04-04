@@ -29,10 +29,17 @@ class LoraSignal(BaseLoraSignal):
 
         # signal
         self._raw_signal: np.array = datafile.data[:]
-
-        # signal stats
         self.stats = SignalStats(datafile)
 
+        # derived
+        self.packets: np.ndarray = np.empty((1, 1))
+
+
+
+
+    @property
+    def signal(self):
+        return self._raw_signal
 
     @property
     def real_signal(self) -> np.array:
@@ -47,15 +54,13 @@ class LoraSignal(BaseLoraSignal):
         return list(self._process_dict.keys())
 
 
-    def extract_packets(self, method: str='slide-mean', **kwargs) -> np.ndarray:
-        """ extract all packets and return array of [packet_len, num_packets]
+    def extract_packets(self, method: str='slide-mean', **kwargs) -> None:
+        """ extract all packets and return array of [num_packets, packet_len]
             kwargs are available for processing method specific inputs
         """
 
         endpoints = self._process_signal(method, **kwargs)
-        packets = self._packet_utils.slice_all_packets(self, endpoints)
-
-        return packets
+        self.packets = self._packet_utils.slice_all_packets(self.signal, endpoints)
 
 
     def _process_signal(self, method: str, **kwargs) -> ty.List[ty.Tuple[int, int]]:
