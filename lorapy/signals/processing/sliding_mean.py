@@ -122,7 +122,7 @@ class SlidingMeanProcessor:
 
 
 
-def find_all_mindices(signal: LoraSignal, overlap: float=0.5):
+def find_all_mindices(signal: LoraSignal, overlap: float=0.5) -> ty.List[ty.Tuple[int, int]]:
     processor = SlidingMeanProcessor(signal, overlap)
     all_indices = processor.extract()
 
