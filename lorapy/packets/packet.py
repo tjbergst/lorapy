@@ -24,6 +24,28 @@ class LoraPacket(BaseLoraPacket):
 
 
 
+    def get_adjustment(self, look_ahead: int=100, threshold: float=0.8):
+        start, stop = 0, look_ahead
+        adjustment = 0
+
+        biased_mean = self.biased_mean(bias=0.7)
+        threshold *= biased_mean
+
+        while stop < self.size:
+            diff = abs(self.real_abs_data[start:stop].mean() - biased_mean)
+
+            if diff > threshold:
+                logger.debug(f'[{start}:{stop}] diff: {diff:0.5f} | suspect padding slice')
+                start, stop = stop, stop + look_ahead
+
+            else:
+                adjustment = start
+                break
+
+        logger.info(f'got final adjustment: {adjustment}')
+        return adjustment
+
+
     def biased_mean(self, bias: float=0.7) -> float:
         biased_max = bias * self.max
         biased_packet = self.data[np.where(self.data > biased_max)]
