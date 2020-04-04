@@ -12,6 +12,9 @@ from lorapy.signals.processing import utils
 from lorapy.signals.signal import LoraSignal  # TODO: circ import issue
 
 
+# TODO: set up .process() method
+
+
 class SlidingMeanProcessor:
 
     _const = constants

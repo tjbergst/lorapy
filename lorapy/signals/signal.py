@@ -5,13 +5,19 @@ from loguru import logger
 import numpy as np
 import typing as ty
 
+from lorapy.common.utils import validate_str_option
 from lorapy.signals._base_signal import BaseLoraSignal
 from lorapy.signals.stats import SignalStats
 # from lorapy.datafile.file import DatFile  # TODO: circ import issue
+from lorapy.signals.processing.sliding_mean import SlidingMeanProcessor
 
+
+# TODO: finish process_signal
 
 
 class LoraSignal(BaseLoraSignal):
+
+    _processing_options = ('slide-mean', 'placeholder')
 
     def __init__(self, datafile: 'DatFile'):
         # inherit
@@ -36,6 +42,10 @@ class LoraSignal(BaseLoraSignal):
     def extract_packets(self) -> np.ndarray:
         """ extract all packets and return array of [packet_len, num_packets] """
         pass
+
+
+    def _process_signal(self, method: str='slide-mean'):
+        method = validate_str_option(method, self._processing_options)
 
 
 
