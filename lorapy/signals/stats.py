@@ -16,6 +16,12 @@ class SignalStats:
         self._samp_per_sym =    datafile.samp_per_sym
         self._packet_len =      datafile.packet_len
 
+    def __repr__(self):
+        return (
+            f"BW: {self.bw} | SF: {self.sf} | Att: {self.att} | " +
+            f"samples per symbol: {self.samp_per_sym} | packet length: {self.packet_len}"
+        )
+
 
     @property
     def filename(self):
