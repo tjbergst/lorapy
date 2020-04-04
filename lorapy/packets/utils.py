@@ -16,11 +16,13 @@ def slice_all_packets(signal: np.array, endpoint_list: ty.List[ty.Tuple[int, int
     :param endpoint_list: list of endpoint pairs representing packet locations
     :return: ndarray of [packet_len, num_packets]
     """
+
     max_length = max(stop - start for start, stop in endpoint_list)
     logger.debug(f'got max packet length: {max_length}')
 
     _packets = np.vstack([
-        _ for pair in endpoint_list
+        _slice_and_pad(signal, pair, max_length)
+        for pair in endpoint_list
     ])
 
     logger.info(f'extracted {len(_packets)} packets from signal')
