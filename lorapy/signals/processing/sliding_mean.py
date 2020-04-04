@@ -124,5 +124,7 @@ class SlidingMeanProcessor:
 
 def find_all_mindices(signal: LoraSignal, overlap: float=0.5):
     processor = SlidingMeanProcessor(signal, overlap)
+    all_indices = processor.extract()
 
-    return processor.extract()
+    endpoints = utils.generate_endpoint_pairs(all_indices, signal.stats.packet_len)
+    return endpoints
