@@ -66,7 +66,7 @@ class LoraSignal(BaseLoraSignal):
         method = validate_str_option(method, self.processing_options)
         logger.info(f'selected "{method}" processing method')
 
-        return self._process_dict[method](self, **kwargs)
+        return self._process_dict[method](**kwargs)
 
 
 
