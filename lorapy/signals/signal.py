@@ -69,6 +69,8 @@ class LoraSignal(BaseLoraSignal):
 
 
     def _load_packets(self) -> ty.List[LoraPacket]:
+        """ loads packets into LoraPackets """
+
         return [
             LoraPacket(packet, self.stats)
             for packet in self._raw_packets
