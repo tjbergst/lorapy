@@ -29,6 +29,13 @@ class BaseLoraPacket:
     def max(self):
         return self.data.max()
 
+    @property
+    def mean(self):
+        return self.data.mean()
+
+    @property
+    def size(self):
+        return self.data.size
 
     @property
     def real_abs_data(self) -> np.array:
