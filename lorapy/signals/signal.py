@@ -10,6 +10,7 @@ from lorapy.signals._base_signal import BaseLoraSignal
 from lorapy.signals.stats import SignalStats
 from lorapy.signals.processing.sliding_mean import find_all_mindices
 from lorapy.packets import utils as packet_utils
+from lorapy.packets.packet import LoraPacket
 # from lorapy.datafile.file import DatFile  # TODO: circ import issue
 
 
@@ -34,6 +35,7 @@ class LoraSignal(BaseLoraSignal):
         # derived
         self.endpoints: ty.List[ty.Tuple[int, int]] = []
         self._raw_packets: np.ndarray = np.empty((1, 1))
+        self.packets: ty.List[LoraPacket] = []
 
 
 
@@ -65,7 +67,11 @@ class LoraSignal(BaseLoraSignal):
 
 
     def _load_packets(self) -> None:
-        pass
+        self.packets = [
+            LoraPacket(packet, self.stats)
+            for packet in self._raw_packets
+        ]
+        logger.debug(f'loaded {len(self.packets)} lora packets')
 
 
     def _process_signal(self, method: str, **kwargs) -> ty.List[ty.Tuple[int, int]]:
