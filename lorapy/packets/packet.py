@@ -20,9 +20,19 @@ class LoraPacket(BaseLoraPacket):
 
         # self.data
         # self.stats
+        # self.real_abs_data
 
 
 
+    def biased_mean(self, bias: float=0.7) -> float:
+        biased_max = bias * self.max
+        biased_packet = self.data[np.where(self.data > biased_max)]
+
+        logger.debug(
+            f'got biased packet [{biased_packet.size} / {self.size}] ' +
+            f'[{biased_packet.mean():0.5f} / {self.mean():0.5f}]'
+        )
+        return biased_packet.mean()
 
 
     def plot(self, future_options: bool=False, *args, **kwargs) -> None:
