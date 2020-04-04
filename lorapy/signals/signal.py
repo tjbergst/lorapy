@@ -13,8 +13,6 @@ from lorapy.packets import utils as packet_utils
 # from lorapy.datafile.file import DatFile  # TODO: circ import issue
 
 
-# TODO: finish process_signal
-
 
 class LoraSignal(BaseLoraSignal):
 

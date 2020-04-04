@@ -9,7 +9,7 @@ import typing as ty
 
 from lorapy.common import constants
 from lorapy.signals.processing import utils
-from lorapy.signals.signal import LoraSignal  # TODO: circ import issue
+# from lorapy.signals.signal import LoraSignal  # TODO: circ import issue
 
 
 
@@ -19,7 +19,7 @@ class SlidingMeanProcessor:
     _const = constants
     _utils = utils
 
-    def __init__(self, signal: LoraSignal, overlap: float=0.5):
+    def __init__(self, signal: 'LoraSignal', overlap: float=0.5):
 
         # signal
         self._lora_signal = signal
@@ -120,9 +120,7 @@ class SlidingMeanProcessor:
         return _min_index
 
 
-
-
-def find_all_mindices(signal: LoraSignal, overlap: float=0.5) -> ty.List[ty.Tuple[int, int]]:
+def find_all_mindices(signal: 'LoraSignal', overlap: float=0.5) -> ty.List[ty.Tuple[int, int]]:
     processor = SlidingMeanProcessor(signal, overlap)
     all_indices = processor.extract()
 
