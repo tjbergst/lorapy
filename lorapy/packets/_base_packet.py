@@ -18,6 +18,17 @@ class BaseLoraPacket:
     def __len__(self):
         return self.data.size
 
+    def __iter__(self):
+        yield from self.data
+
+    @property
+    def min(self):
+        return self.data.min()
+
+    @property
+    def max(self):
+        return self.data.max()
+
 
     @property
     def real_abs_data(self) -> np.array:
