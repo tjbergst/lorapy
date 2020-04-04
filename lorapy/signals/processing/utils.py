@@ -15,7 +15,7 @@ def clean_index_list(index_list: ty.Union[list, np.array], threshold: int = 0, s
         :return: list of cleaned indexes
     """
 
-    index_list = np.array(index_list) if not isinstance(index_list, np.array) else index_list
+    index_list = np.array(index_list) if not isinstance(index_list, np.ndarray) else index_list
     index_diffs = np.diff(index_list)
 
     drop_indexes = list(
