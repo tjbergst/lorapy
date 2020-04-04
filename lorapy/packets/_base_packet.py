@@ -23,15 +23,15 @@ class BaseLoraPacket:
 
     @property
     def min(self):
-        return self.data.min()
+        return self.real_abs_data.min()
 
     @property
     def max(self):
-        return self.data.max()
+        return self.real_abs_data.max()
 
     @property
     def mean(self):
-        return self.data.mean()
+        return self.real_abs_data.mean()
 
     @property
     def size(self):
