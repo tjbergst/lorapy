@@ -12,7 +12,6 @@ from lorapy.signals.processing import utils
 from lorapy.signals.signal import LoraSignal  # TODO: circ import issue
 
 
-# TODO: set up .process() method
 
 
 class SlidingMeanProcessor:
@@ -20,10 +19,13 @@ class SlidingMeanProcessor:
     _const = constants
     _utils = utils
 
-    def __init__(self, signal: LoraSignal):
+    def __init__(self, signal: LoraSignal, overlap: float=0.5):
 
         # signal
         self._lora_signal = signal
+
+        # overlap
+        self.overlap = overlap
 
 
 
@@ -32,8 +34,9 @@ class SlidingMeanProcessor:
         return self._lora_signal.real_abs_signal
 
 
-    def process(self):
-        pass
+    def extract(self):
+        all_indices = self._find_all_mindices(self.signal, self.overlap)
+        return all_indices
 
 
     def _find_all_mindices(self, signal: np.array, overlap: float=0.5) -> ty.List[int]:
@@ -116,3 +119,10 @@ class SlidingMeanProcessor:
         _min_index = indice_list[argmin]
         return _min_index
 
+
+
+
+def find_all_mindices(signal: LoraSignal, overlap: float=0.5):
+    processor = SlidingMeanProcessor(signal, overlap)
+
+    return processor.extract()
