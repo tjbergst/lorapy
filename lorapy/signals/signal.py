@@ -32,6 +32,7 @@ class LoraSignal(BaseLoraSignal):
         self.stats = SignalStats(datafile)
 
         # derived
+        self.endpoints: ty.List[ty.Tuple[int, int]] = []
         self.packets: np.ndarray = np.empty((1, 1))
 
 
@@ -59,8 +60,8 @@ class LoraSignal(BaseLoraSignal):
             kwargs are available for processing method specific inputs
         """
 
-        endpoints = self._process_signal(method, **kwargs)
-        self.packets = self._packet_utils.slice_all_packets(self.signal, endpoints)
+        self.endpoints = self._process_signal(method, **kwargs)
+        self.packets = self._packet_utils.slice_all_packets(self.signal, self.endpoints)
 
 
     def _process_signal(self, method: str, **kwargs) -> ty.List[ty.Tuple[int, int]]:
