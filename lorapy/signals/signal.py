@@ -51,14 +51,15 @@ class LoraSignal(BaseLoraSignal):
         pass
 
 
-    def _process_signal(self, method: str='slide-mean', **kwargs) -> np.ndarray:
+    def _process_signal(self, method: str='slide-mean', **kwargs) -> ty.List[ty.Tuple[int, int]]:
         method = validate_str_option(method, self.processing_options)
         logger.info(f'selected "{method}" processing method')
 
         return self._process_dict[method](self, **kwargs)
 
 
-    def _process_sliding_mean(self, **kwargs) -> np.ndarray:
-        all_indices = find_all_mindices(self, **kwargs)
+    def _process_sliding_mean(self, **kwargs) -> ty.List[ty.Tuple[int, int]]:
+        endpoints = find_all_mindices(self, **kwargs)
+        return endpoints
 
 
