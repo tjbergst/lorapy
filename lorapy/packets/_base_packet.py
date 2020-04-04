@@ -10,7 +10,6 @@ class BaseLoraPacket:
         self.data = data
 
 
-
     def __repr__(self):
         return f"{self.__class__.__name__}(length={self.data.size})"
 
