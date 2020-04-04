@@ -35,7 +35,7 @@ class LoraPacket(BaseLoraPacket):
             diff = abs(self.real_abs_data[start:stop].mean() - biased_mean)
 
             if diff > threshold:
-                logger.debug(f'[{start}:{stop}] diff: {diff:0.5f} | suspect padding slice')
+                # logger.debug(f'[{start}:{stop}] diff: {diff:0.5f} | suspect padding slice')
                 start, stop = stop, stop + look_ahead
 
             else:
@@ -48,11 +48,11 @@ class LoraPacket(BaseLoraPacket):
 
     def biased_mean(self, bias: float=0.7) -> float:
         biased_max = bias * self.max
-        biased_packet = self.data[np.where(self.data > biased_max)]
+        biased_packet = self.real_abs_data[np.where(self.real_abs_data > biased_max)]
 
         logger.debug(
             f'got biased packet [{biased_packet.size} / {self.size}] ' +
-            f'[{biased_packet.mean():0.5f} / {self.mean():0.5f}]'
+            f'[{biased_packet.mean():0.5f} / {self.mean:0.5f}]'
         )
         return biased_packet.mean()
 
@@ -65,6 +65,6 @@ class LoraPacket(BaseLoraPacket):
         """ plots packet with future options """
         # TODO: incorporate lorapy.plotting
 
-        plt.plot(self.data, *args, **kwargs)
+        plt.plot(self.real_abs_data, *args, **kwargs)
         plt.show()
 
