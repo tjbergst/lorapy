@@ -32,6 +32,9 @@ class SlidingMeanProcessor:
         return self._lora_signal.real_abs_signal
 
 
+    def process(self):
+        pass
+
 
     def _find_all_mindices(self, signal: np.array, overlap: float=0.5) -> ty.List[int]:
         """
