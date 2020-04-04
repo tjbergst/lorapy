@@ -28,7 +28,7 @@ def clean_index_list(index_list: ty.Union[list, np.array], threshold: int = 0, s
 
 
 
-def generate_endpoint_pairs(index_list: ty.Union[list, np.array], packet_len: int) -> list:
+def generate_endpoint_pairs(index_list: ty.Union[list, np.array], packet_len: int) -> ty.List[ty.Tuple[int, int]]:
     """ generates pairs of packet endpoints based on list of padding indexes
 
     :param index_list: list of padding indexes
@@ -39,5 +39,3 @@ def generate_endpoint_pairs(index_list: ty.Union[list, np.array], packet_len: in
     return [
         (idx, idx + packet_len) for idx in index_list
     ]
-
-
