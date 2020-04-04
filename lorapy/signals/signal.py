@@ -64,14 +64,15 @@ class LoraSignal(BaseLoraSignal):
 
         self.endpoints = self._process_signal(method, **kwargs)
         self._raw_packets = self._packet_utils.slice_all_packets(self.signal, self.endpoints)
+        self.packets = self._load_packets()
+        logger.debug(f'loaded {len(self.packets)} lora packets')
 
 
-    def _load_packets(self) -> None:
-        self.packets = [
+    def _load_packets(self) -> ty.List[LoraPacket]:
+        return [
             LoraPacket(packet, self.stats)
             for packet in self._raw_packets
         ]
-        logger.debug(f'loaded {len(self.packets)} lora packets')
 
 
     def _process_signal(self, method: str, **kwargs) -> ty.List[ty.Tuple[int, int]]:
