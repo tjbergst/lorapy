@@ -15,7 +15,10 @@ class BaseLoraPacket:
     def __repr__(self):
         return f"{self.__class__.__name__}(length={self.data.size}) | {self.stats}"
 
-
-
     def __len__(self):
         return self.data.size
+
+
+    @property
+    def real_abs_data(self) -> np.array:
+        return np.real(np.abs(self.data))
