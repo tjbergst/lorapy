@@ -3,6 +3,7 @@
 
 from loguru import logger
 import numpy as np
+import typing as ty
 import matplotlib.pyplot as plt
 
 from lorapy.common import exceptions as exc
@@ -14,18 +15,20 @@ from lorapy.signals.stats import SignalStats  # TODO: circ import issue
 
 class LoraPacket(BaseLoraPacket):
 
-    _auto_adj_look_ahead = 100
+    _auto_adj_look_ahead = 10
     _auto_adj_threshold = 0.5
 
     _over_adj_limit = 2.5 * constants.padding_length
     # _over_adj_limit = 10_000  # test val
     _downgrade_overadj_error = True
 
-    def __init__(self, data: np.array, stats: SignalStats, packet_id: int, auto_adjust: bool=True):
+    def __init__(self, data: np.array, stats: SignalStats, packet_id: int,
+                 endpoints: ty.Tuple[int, int], auto_adjust: bool=True):
         # inherit
         BaseLoraPacket.__init__(self, data, stats, packet_id)
         # self.data, self.stats, self.real_abs_data
 
+        self.endpoints: ty.Tuple[int, int] = endpoints
         self.adjustment: int = 0
 
         if auto_adjust:
@@ -77,8 +80,11 @@ class LoraPacket(BaseLoraPacket):
         plt.show()
 
 
-    def auto_adjust(self) -> None:
-        adjustment = self.get_adjustment(self._auto_adj_look_ahead, self._auto_adj_threshold)
+    def auto_adjust(self, look_ahead: ty.Optional[int]=None, threshold: ty.Optional[float]=None) -> None:
+        """ auto adjust, option to override class attr params here """
+        look_ahead = self._auto_adj_look_ahead if look_ahead is None else look_ahead
+        threshold = self._auto_adj_threshold if threshold is None else threshold
+        adjustment = self.get_adjustment(look_ahead, threshold)
         self.adjustment = self._check_over_adjustment(adjustment)
 
 
