@@ -87,6 +87,7 @@ class LoraPacket(BaseLoraPacket):
             if not self._downgrade_overadj_error:
                 raise exc.OverAdjustedPacketError(adjust, self._over_adj_limit)
             logger.warning(f'packet {self.pid} is set to be overadjusted [{adjust} / {self._over_adj_limit}]')
+            return 0
 
         return adjust
 
