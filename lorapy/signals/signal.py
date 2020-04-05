@@ -60,6 +60,8 @@ class LoraSignal(BaseLoraSignal):
     def extract_packets(self, method: str='slide-mean', auto_adj: bool=True, **kwargs) -> None:
         """ extract all packets and return array of [num_packets, packet_len]
             kwargs are available for processing method specific inputs
+
+            # TODO: move packet adjusting into initial load
         """
 
         self.endpoints = self._process_signal(method, **kwargs)
@@ -72,17 +74,19 @@ class LoraSignal(BaseLoraSignal):
         logger.debug(f'loaded {len(self.packets)} lora packets')
 
 
-    def _adjust_packets(self) -> ty.List[LoraPacket]:
-        packets = [
+    def _adjust_packets(self) -> None:
+        self._adjust_endpoints()
+        self._slice_and_load(_auto_adj=False)
 
+
+    def _adjust_endpoints(self) -> None:
+        self._old_endpoints = self.endpoints[:]
+
+        self.endpoints = [
+            (start + pkt.adjustment, stop + pkt.adjustment)
+            for (start, stop), pkt in zip(self.endpoints, self.packets)
         ]
-
-        return packets
-
-
-    def _adjust_endpoints(self):
-        pass
-
+        logger.debug(f'adjusted endpoints')
 
 
     def _load_packets(self, _auto_adj: bool) -> ty.List[LoraPacket]:
