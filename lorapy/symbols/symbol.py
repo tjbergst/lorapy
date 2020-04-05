@@ -4,6 +4,7 @@
 from loguru import logger
 import numpy as np
 import typing as ty
+import matplotlib.pyplot as plt
 
 from lorapy.common.stats import LoraStats  # TODO: circ import issue
 from lorapy.symbols._base_symbol import BaseLoraSymbol
@@ -21,3 +22,19 @@ class LoraSymbol(BaseLoraSymbol):
 
         #
 
+
+
+
+
+    def plot(self, real: bool=True, adjust: int=0, *args, **kwargs) -> None:
+        return self._plot_packet(real, adjust, *args, **kwargs)
+
+
+    def _plot_packet(self, real: bool, adjust: int=0, *args, **kwargs) -> None:
+        """ plots packet with future options """
+        # TODO: incorporate lorapy.plotting
+
+        _data = self.real_abs_data if real else self.data
+
+        plt.plot(_data[adjust:], *args, **kwargs)
+        plt.show()
