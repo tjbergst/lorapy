@@ -4,7 +4,9 @@
 from loguru import logger
 import numpy as np
 import typing as ty
+import matplotlib.pyplot as plt
 
+from lorapy.utils import misc as misc_utils
 from lorapy.common.utils import validate_str_option
 from lorapy.signals._base_signal import BaseLoraSignal
 from lorapy.signals.processing.sliding_mean import find_all_mindices
@@ -16,6 +18,7 @@ from lorapy.packets.packet import LoraPacket
 
 class LoraSignal(BaseLoraSignal):
 
+    _misc_utils = misc_utils
     _packet_utils = packet_utils
 
     def __init__(self, datafile: 'DatFile'):
@@ -52,7 +55,7 @@ class LoraSignal(BaseLoraSignal):
 
 
     def _slice_and_load(self, _auto_adj: bool) -> None:
-        self._raw_packets = self._packet_utils.slice_all_packets(self.signal, self.endpoint_list)
+        self._raw_packets = self._packet_utils.slice_all_packets(self.data, self.endpoint_list)
         self.packets = self._load_packets(_auto_adj)
         logger.debug(f'loaded {len(self.packets)} lora packets')
 
@@ -111,3 +114,31 @@ class LoraSignal(BaseLoraSignal):
         return endpoints
 
 
+
+    # -------------------------------- plotting methods --------------------------------
+
+    def plot(self, real: bool=True, start: ty.Optional[int]=None, stop: ty.Optional[int]=None, *args, **kwargs) -> None:
+        start = start if start is not None else 0
+        stop = stop if stop is not None else self.size
+
+        return self._plot_signal(real, start, stop, *args, **kwargs)
+
+
+    def _plot_signal(self, real: bool, start: int, stop: int, *args, **kwargs) -> None:
+        """ plots packet with future options """
+        # TODO: incorporate lorapy.plotting
+
+        _data = self.real_abs_data if real else self.data
+
+        plt.plot(_data[start:stop], *args, **kwargs)
+        plt.show()
+
+
+    def plot_packet(self, real: bool=True, packet_num: ty.Optional[int]=None, **kwargs) -> None:
+        packet_num = packet_num if packet_num is not None else self._misc_utils.rand(self.num_packets)
+
+        return self._plot_packet(real, packet_num, **kwargs)
+
+
+    def _plot_packet(self, _real: bool, _packet_num: int, **kwargs) -> None:
+        return self.packets[_packet_num].plot(_real, **kwargs)
