@@ -5,6 +5,7 @@ import pathlib
 import numpy as np
 import typing as ty
 
+from lorapy.common.stats import LoraStats
 from lorapy.datafile._base_file import BaseDatFile
 from lorapy.datafile import encoding
 from lorapy.signals.signal import LoraSignal
