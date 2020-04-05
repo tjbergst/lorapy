@@ -23,6 +23,7 @@ class LoraStats:
 
         # packet stats
         self.packet_endpoints: ty.Tuple[int, int] = (0, 0)
+        self.packet_id: int = -1
         self.packet_adjustment: int = 0
 
         # symbol stats
