@@ -17,7 +17,7 @@ class LoraPacket(BaseLoraPacket):
     _auto_adj_look_ahead = 100
     _auto_adj_threshold = 0.5
 
-    _over_adj_limit = 1.5 * constants.padding_length
+    _over_adj_limit = 2.5 * constants.padding_length
     # _over_adj_limit = 10_000  # test val
     _downgrade_overadj_error = True
 
@@ -39,7 +39,7 @@ class LoraPacket(BaseLoraPacket):
         biased_mean = self.biased_mean(bias=0.7)
         threshold *= biased_mean
 
-        while stop < self.size:
+        while stop < self.size // 5:
             diff = abs(self.real_abs_data[start:stop].mean() - biased_mean)
 
             if diff > threshold:
