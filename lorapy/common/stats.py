@@ -19,11 +19,11 @@ class LoraStats:
         self._packet_len: int =     0
 
         # packet stats
-        self.packet_endpoints: ty.Tuple[int, int] = 0, 0
+        self.packet_endpoints: ty.Tuple[int, int] = (0, 0)
         self.packet_adjustment: int = 0
 
         # symbol stats
-        self.symbol_endpoints: ty.Tuple[int, int] = 0, 0
+        self.symbol_endpoints: ty.Tuple[int, int] = (0, 0)
 
         self._load_kwargs(**kwargs)
 
