@@ -7,7 +7,6 @@ import copy
 import typing as ty
 import matplotlib.pyplot as plt
 
-from lorapy.utils import misc as misc_utils
 from lorapy.common.utils import validate_str_option
 from lorapy.signals._base_signal import BaseLoraSignal
 from lorapy.signals.processing.sliding_mean import find_all_mindices
@@ -19,7 +18,6 @@ from lorapy.packets.packet import LoraPacket
 
 class LoraSignal(BaseLoraSignal):
 
-    _misc_utils = misc_utils
     _packet_utils = packet_utils
 
     def __init__(self, datafile: 'DatFile'):
@@ -143,9 +141,9 @@ class LoraSignal(BaseLoraSignal):
             logger.warning(f'no packets to plot, extract packets first!')
             return
 
-        packet_num = packet_num if packet_num is not None else self._misc_utils.rand(self.num_packets)
         return self._plot_packet(real, packet_num, **kwargs)
 
 
-    def _plot_packet(self, _real: bool, _packet_num: int, **kwargs) -> None:
-        return self.packets[_packet_num].plot(_real, **kwargs)
+    def _plot_packet(self, _real: bool, _packet_num: ty.Optional[int]=None, **kwargs) -> None:
+        _packet = self.packets[_packet_num] if _packet_num is not None else self.random_packet
+        return _packet.plot(_real, **kwargs)

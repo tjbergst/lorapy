@@ -7,7 +7,6 @@ import copy
 import typing as ty
 import matplotlib.pyplot as plt
 
-from lorapy.utils import misc as misc_utils
 from lorapy.common import exceptions as exc
 from lorapy.common import constants
 from lorapy.common.stats import LoraStats  # TODO: circ import issue
@@ -26,7 +25,6 @@ class LoraPacket(BaseLoraPacket):
     # _over_adj_limit = 10_000  # test val
     _downgrade_overadj_error = True
 
-    _misc_utils = misc_utils
     _sym_utils = sym_utils
 
     def __init__(self, data: np.array, stats: LoraStats,
@@ -148,9 +146,9 @@ class LoraPacket(BaseLoraPacket):
             logger.warning(f'no symbols to plot, extract symbols first!')
             return
 
-        symbol_num = symbol_num if symbol_num is not None else self._misc_utils.rand(self.stats.const.num_symbols)
         return self._plot_symbol(real, symbol_num, **kwargs)
 
 
-    def _plot_symbol(self, _real: bool, _symbol_num: int, **kwargs) -> None:
-        return self.symbols[_symbol_num].plot(_real, **kwargs)
+    def _plot_symbol(self, _real: bool, _symbol_num: ty.Optional[int]=None, **kwargs) -> None:
+        _symbol = self.symbols[_symbol_num] if _symbol_num is not None else self.random_symbol
+        return _symbol.plot(_real, **kwargs)
