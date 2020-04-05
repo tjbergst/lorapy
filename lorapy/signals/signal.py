@@ -73,14 +73,21 @@ class LoraSignal(BaseLoraSignal):
         self.packets = self._load_packets(_auto_adj)
         logger.debug(f'loaded {len(self.packets)} lora packets')
 
+        if _auto_adj:
+            self.adjust_packets()
 
-    def _adjust_packets(self) -> None:
+
+    def adjust_packets(self, force_check: bool=False) -> None:
+        """ adjusts packets based LoraPacket.adjustment, option to force adjustment check per packet """
+        if force_check:
+            _ = [packet.auto_adjust() for packet in self.packets]
+
         self._adjust_endpoints()
         self._slice_and_load(_auto_adj=False)
 
 
     def _adjust_endpoints(self) -> None:
-        self._old_endpoints = self.endpoints[:]
+        self._old_endpoints = self.endpoints[:]  # TODO: dev
 
         self.endpoints = [
             (start + pkt.adjustment, stop + pkt.adjustment)
