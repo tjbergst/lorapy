@@ -62,3 +62,10 @@ class BaseLoraSymbol:
     @property
     def packet_endpoints(self) -> ty.Tuple[int, int]:
         return self.stats.packet_endpoints
+
+    @property
+    def absolute_endpoints(self) -> ty.Tuple[int, int]:
+        packet_offset = self.packet_endpoints[0]
+        start, stop = self.endpoints
+
+        return start + packet_offset, stop + packet_offset
