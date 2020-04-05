@@ -30,7 +30,7 @@ class LoraSignal(BaseLoraSignal):
 
         # signal
         self._raw_signal: np.array = datafile.data[:]
-        self.stats = LoraStats(datafile)
+        self.stats = datafile.stats
 
         # derived
         self.endpoint_list: ty.List[ty.Tuple[int, int]] = []
