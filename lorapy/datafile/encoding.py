@@ -24,7 +24,8 @@ def _samples_per_sym(file: 'DatFile') -> int:
     _value = int(np.round(
         ((2 ** file.sf) / bw_val) * constants.Fs
     ))
-    return _value
+    _value *= 9.75  # TODO: dev patch
+    return round(_value)
 
 
 def _packet_length(samples: int) -> int:
