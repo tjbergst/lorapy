@@ -29,7 +29,7 @@ class LoraPacket(BaseLoraPacket):
         self.adjustment: int = 0
 
         if auto_adjust:
-            self.adjustment = self._auto_adjust()
+            self.auto_adjust()
 
 
     def get_adjustment(self, look_ahead: int=100, threshold: float=0.5, check: bool=True) -> int:
@@ -77,9 +77,9 @@ class LoraPacket(BaseLoraPacket):
         plt.show()
 
 
-    def _auto_adjust(self) -> int:
+    def auto_adjust(self) -> None:
         adjustment = self.get_adjustment(self._auto_adj_look_ahead, self._auto_adj_threshold)
-        return self._check_over_adjustment(adjustment)
+        self.adjustment = self._check_over_adjustment(adjustment)
 
 
     def _check_over_adjustment(self, adjust: int) -> int:
