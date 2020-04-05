@@ -1,13 +1,15 @@
 # load datafile
 
-
-
 from loguru import logger
 import pathlib
 import typing as ty
 
 from lorapy.common import paths
 from lorapy.datafile.file import DatFile
+
+# TODO: assign each DatFile and id and add it to the repr
+# TODO: add .select(id=XX) method, add .filter(BW=X, SF=X) method
+
 
 
 class DatLoader:
