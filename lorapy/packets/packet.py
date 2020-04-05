@@ -19,6 +19,7 @@ class LoraPacket(BaseLoraPacket):
 
     _over_adj_limit = 1.5 * constants.padding_length
     # _over_adj_limit = 10_000  # test val
+    _downgrade_overadj_error = True
 
     def __init__(self, data: np.array, stats: SignalStats, packet_id: int, auto_adjust: bool=True):
         # inherit
@@ -83,7 +84,9 @@ class LoraPacket(BaseLoraPacket):
 
     def _check_over_adjustment(self, adjust: int) -> int:
         if adjust > self._over_adj_limit:
-            raise exc.OverAdjustedPacketError(adjust, self._over_adj_limit)
+            if not self._downgrade_overadj_error:
+                raise exc.OverAdjustedPacketError(adjust, self._over_adj_limit)
+            logger.warning(f'packet {self.pid} is set to be overadjusted [{adjust} / {self._over_adj_limit}]')
 
         return adjust
 
