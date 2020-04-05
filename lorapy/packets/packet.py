@@ -20,9 +20,9 @@ class LoraPacket(BaseLoraPacket):
     _over_adj_limit = 1.5 * constants.padding_length
     # _over_adj_limit = 10_000  # test val
 
-    def __init__(self, data: np.array, stats: SignalStats, auto_adjust: bool=True):
+    def __init__(self, data: np.array, stats: SignalStats, packet_id: int, auto_adjust: bool=True):
         # inherit
-        BaseLoraPacket.__init__(self, data, stats)
+        BaseLoraPacket.__init__(self, data, stats, packet_id)
         # self.data, self.stats, self.real_abs_data
 
         self.adjustment: int = 0
