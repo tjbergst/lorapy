@@ -49,7 +49,7 @@ class LoraPacket(BaseLoraPacket):
         biased_mean = self.biased_mean(bias=0.7)
         threshold *= biased_mean
 
-        while stop < self.size // 5:
+        while stop < self.size // 3:
             diff = abs(self.real_abs_data[start:stop].mean() - biased_mean)
 
             if diff > threshold:
