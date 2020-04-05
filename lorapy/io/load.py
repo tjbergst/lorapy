@@ -16,9 +16,11 @@ class DatLoader:
 
     _path_utils = paths
 
-    def __init__(self, data_path: ty.Union[pathlib.Path, str], autoload: bool=True):
+    def __init__(self, data_path: ty.Union[pathlib.Path, str],
+                 autoload: bool=True, glob_pattern: ty.Optional[str]=None):
 
         self._autoload = autoload
+        self._glob_pattern = glob_pattern if glob_pattern is not None else self._glob_pattern
 
         self.data_file: pathlib.Path() = None
         self.data_dir: pathlib.Path() = self._validate_data_path(data_path)
