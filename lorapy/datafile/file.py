@@ -51,7 +51,7 @@ class DatFile(BaseDatFile):
     def _compute_file_params(self) -> None:
         self.bw = filename_utils.extract_value(self.name, self._pattern_bw)
         self.sf = filename_utils.extract_value(self.name, self._pattern_sf)
-        self.att = filename_utils.extract_value(self.name, self._pattern_att)
+        self.att = filename_utils.extract_value(self.name, self._pattern_att, suppress_error=True)
 
         self.samp_per_sym, self.packet_len = encoding.compute_params(self)
 
