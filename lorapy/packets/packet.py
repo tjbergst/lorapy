@@ -3,8 +3,6 @@
 
 from loguru import logger
 import numpy as np
-import typing as ty
-
 import matplotlib.pyplot as plt
 
 from lorapy.common import exceptions as exc
@@ -25,10 +23,7 @@ class LoraPacket(BaseLoraPacket):
     def __init__(self, data: np.array, stats: SignalStats, auto_adjust: bool=True):
         # inherit
         BaseLoraPacket.__init__(self, data, stats)
-
-        # self.data
-        # self.stats
-        # self.real_abs_data
+        # self.data, self.stats, self.real_abs_data
 
         self.adjustment: int = 0
 
