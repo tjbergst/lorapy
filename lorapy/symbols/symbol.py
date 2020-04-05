@@ -37,4 +37,5 @@ class LoraSymbol(BaseLoraSymbol):
         _data = self.real_abs_data if real else self.data
 
         plt.plot(_data[adjust:], *args, **kwargs)
+        plt.title(f'symbol id: {self.sid}  [{self.endpoints[0]} : {self.endpoints[1]}]')
         plt.show()
