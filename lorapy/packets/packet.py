@@ -109,6 +109,8 @@ class LoraPacket(BaseLoraPacket):
 
     # ------------------------------------------ SYMBOLS ------------------------------------------
 
+    # TODO: probably need to incorporate some kind of endpoint adjusting for symbols (i.e. symbol processor)
+
     def extract_preamble_symbols(self) -> None:
         num_symbols, samp_per_sym = self.stats.const.num_symbols, self.stats.samp_per_sym
         self.endpoint_list = self._sym_utils.gen_preamble_endpoints(num_symbols, samp_per_sym)
