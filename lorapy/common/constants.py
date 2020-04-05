@@ -26,5 +26,6 @@ padding_length = 2200
 # Fs = int(1e6)
 Fs = int(20e3)
 
+num_symbols = 8
 
 
