@@ -77,10 +77,12 @@ class LoraSignal(BaseLoraSignal):
             self.adjust_packets()
 
 
-    def adjust_packets(self, force_check: bool=False) -> None:
+    def adjust_packets(self, force_check: bool=False,
+                       look_ahead: ty.Optional[int]=None, threshold: ty.Optional[float]=None) -> None:
         """ adjusts packets based LoraPacket.adjustment, option to force adjustment check per packet """
+
         if force_check:
-            _ = [packet.auto_adjust() for packet in self.packets]
+            _ = [packet.auto_adjust(look_ahead, threshold) for packet in self.packets]
 
         self._adjust_endpoints()
         self._slice_and_load(_auto_adj=False)
@@ -100,8 +102,8 @@ class LoraSignal(BaseLoraSignal):
         """ loads packets into LoraPackets """
 
         return [
-            LoraPacket(packet, self.stats, pid, _auto_adj)
-            for pid, packet in enumerate(self._raw_packets)
+            LoraPacket(packet, self.stats, pid, endpoints, _auto_adj)
+            for pid, (packet, endpoints) in enumerate(zip(self._raw_packets, self.endpoints))
         ]
 
 
@@ -119,6 +121,9 @@ class LoraSignal(BaseLoraSignal):
 
 
     def _process_sliding_mean(self, **kwargs) -> ty.List[ty.Tuple[int, int]]:
+        """ process with sliding mean method
+            kwargs: overlap: float=0.5
+        """
         endpoints = find_all_mindices(self, **kwargs)
         return endpoints
 
