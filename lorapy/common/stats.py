@@ -1,10 +1,11 @@
 # signal stats
 
-
+import numpy as np
+import typing as ty
 # from lorapy.datafile.file import DatFile  # TODO: circ import issue
 
 
-class SignalStats:
+class LoraStats:
 
     def __init__(self, datafile: 'DatFile'):
 
@@ -15,6 +16,10 @@ class SignalStats:
         self._att =             datafile.att
         self._samp_per_sym =    datafile.samp_per_sym
         self._packet_len =      datafile.packet_len
+
+        self._endpoints: ty.Tuple[int, int] = 0, 0
+
+
 
     def __repr__(self):
         return (

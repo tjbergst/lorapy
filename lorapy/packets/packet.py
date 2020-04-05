@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 from lorapy.common import exceptions as exc
 from lorapy.common import constants
 from lorapy.packets._base_packet import BaseLoraPacket
-from lorapy.common.stats import SignalStats  # TODO: circ import issue
+from lorapy.common.stats import LoraStats  # TODO: circ import issue
 
 
 
@@ -22,7 +22,7 @@ class LoraPacket(BaseLoraPacket):
     # _over_adj_limit = 10_000  # test val
     _downgrade_overadj_error = True
 
-    def __init__(self, data: np.array, stats: SignalStats, packet_id: int,
+    def __init__(self, data: np.array, stats: LoraStats, packet_id: int,
                  endpoints: ty.Tuple[int, int], auto_adjust: bool=True):
         # inherit
         BaseLoraPacket.__init__(self, data, stats, packet_id)
