@@ -26,11 +26,11 @@ class LoraSymbol(BaseLoraSymbol):
 
 
 
-    def plot(self, real: bool=True, adjust: int=0, *args, **kwargs) -> None:
-        return self._plot_packet(real, adjust, *args, **kwargs)
+    def plot(self, real: bool=False, adjust: int=0, *args, **kwargs) -> None:
+        return self._plot_symbol(real, adjust, *args, **kwargs)
 
 
-    def _plot_packet(self, real: bool, adjust: int=0, *args, **kwargs) -> None:
+    def _plot_symbol(self, real: bool, adjust: int=0, *args, **kwargs) -> None:
         """ plots packet with future options """
         # TODO: incorporate lorapy.plotting
 

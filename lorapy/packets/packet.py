@@ -7,6 +7,7 @@ import copy
 import typing as ty
 import matplotlib.pyplot as plt
 
+from lorapy.utils import misc as misc_utils
 from lorapy.common import exceptions as exc
 from lorapy.common import constants
 from lorapy.common.stats import LoraStats  # TODO: circ import issue
@@ -25,6 +26,7 @@ class LoraPacket(BaseLoraPacket):
     # _over_adj_limit = 10_000  # test val
     _downgrade_overadj_error = True
 
+    _misc_utils = misc_utils
     _sym_utils = sym_utils
 
     def __init__(self, data: np.array, stats: LoraStats,
@@ -61,7 +63,7 @@ class LoraPacket(BaseLoraPacket):
                 adjustment = start
                 break
 
-        logger.info(f'got final adjustment: {adjustment}')
+        # logger.info(f'got final adjustment: {adjustment}')
         return self._check_over_adjustment(adjustment) if check else adjustment
 
 
@@ -69,25 +71,11 @@ class LoraPacket(BaseLoraPacket):
         biased_max = bias * self.max
         biased_packet = self.real_abs_data[np.where(self.real_abs_data > biased_max)]
 
-        logger.debug(
-            f'got biased packet [{biased_packet.size} / {self.size}] ' +
-            f'[{biased_packet.mean():0.5f} / {self.mean:0.5f}]'
-        )
+        # logger.debug(
+        #     f'got biased packet [{biased_packet.size} / {self.size}] ' +
+        #     f'[{biased_packet.mean():0.5f} / {self.mean:0.5f}]'
+        # )
         return biased_packet.mean()
-
-
-    def plot(self, real: bool=True, adjust: int=0, *args, **kwargs) -> None:
-        return self._plot_packet(real, adjust, *args, **kwargs)
-
-
-    def _plot_packet(self, real: bool, adjust: int=0, *args, **kwargs) -> None:
-        """ plots packet with future options """
-        # TODO: incorporate lorapy.plotting
-
-        _data = self.real_abs_data if real else self.data
-
-        plt.plot(_data[adjust:], *args, **kwargs)
-        plt.show()
 
 
     def auto_adjust(self, look_ahead: ty.Optional[int]=None, threshold: ty.Optional[float]=None) -> None:
@@ -110,7 +98,7 @@ class LoraPacket(BaseLoraPacket):
 
 
 
-    # ------------------------------------------ SYMBOLS ------------------------------------------
+    # --------------------------------------- symbol methods ---------------------------------------
 
     # TODO: probably need to incorporate some kind of endpoint adjusting for symbols (i.e. symbol processor)
 
@@ -134,3 +122,35 @@ class LoraPacket(BaseLoraPacket):
             LoraSymbol(symbol, copy.copy(self.stats), sid, endpoints)
             for sid, (symbol, endpoints) in enumerate(zip(self._raw_symbols, self.endpoint_list))
         ]
+
+
+
+    # --------------------------------------- plotting methods ---------------------------------------
+
+    def plot(self, real: bool=False, adjust: int=0, *args, **kwargs) -> None:
+        return self._plot_packet(real, adjust, *args, **kwargs)
+
+
+    def _plot_packet(self, real: bool, adjust: int=0, *args, **kwargs) -> None:
+        """ plots packet with future options """
+        # TODO: incorporate lorapy.plotting
+
+        _data = self.real_abs_data if real else self.data
+
+        plt.plot(_data[adjust:], *args, **kwargs)
+        plt.title(f'packet id: {self.pid}  [{self.endpoints[0]} : {self.endpoints[1]}]')
+        plt.show()
+
+
+
+    def plot_symbol(self, real: bool=False, symbol_num: ty.Optional[int]=None, **kwargs) -> None:
+        if len(self.symbols) == 0:
+            logger.warning(f'no symbols to plot, extract symbols first!')
+            return
+
+        symbol_num = symbol_num if symbol_num is not None else self._misc_utils.rand(self.stats.const.num_symbols)
+        return self._plot_symbol(real, symbol_num, **kwargs)
+
+
+    def _plot_symbol(self, _real: bool, _symbol_num: int, **kwargs) -> None:
+        return self.symbols[_symbol_num].plot(_real, **kwargs)

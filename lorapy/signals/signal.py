@@ -138,7 +138,7 @@ class LoraSignal(BaseLoraSignal):
         plt.show()
 
 
-    def plot_packet(self, real: bool=True, packet_num: ty.Optional[int]=None, **kwargs) -> None:
+    def plot_packet(self, real: bool=False, packet_num: ty.Optional[int]=None, **kwargs) -> None:
         if len(self.packets) == 0:
             logger.warning(f'no packets to plot, extract packets first!')
             return
