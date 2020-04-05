@@ -20,6 +20,7 @@ bw_values = {
 # TODO: find better name
 packet_length_scalar = 30.25
 
+# TODO: find better way to set these, maybe in a lorapy.set_constants('default' | 'benchtop') or something?
 # inter-packet padding
 padding_length = 17_000
 # padding_length = 2200
