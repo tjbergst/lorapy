@@ -44,3 +44,19 @@ class BaseLoraPacket:
     @property
     def real_abs_data(self) -> np.array:
         return np.real(np.abs(self.data))
+
+    @property
+    def adjustment(self) -> int:
+        return self.stats.packet_adjustment
+
+    @adjustment.setter
+    def adjustment(self, adj: int) -> None:
+        self.stats.packet_adjustment = adj
+
+    @property
+    def endpoints(self) -> ty.Tuple[int, int]:
+        return self.stats.packet_endpoints
+
+    @endpoints.setter
+    def endpoints(self, _endpoints: ty.Tuple[int, int]) -> None:
+        self.stats.packet_endpoints = _endpoints

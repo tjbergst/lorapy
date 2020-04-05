@@ -32,23 +32,6 @@ class LoraPacket(BaseLoraPacket):
             self.auto_adjust()
 
 
-    @property
-    def adjustment(self) -> int:
-        return self.stats.packet_adjustment
-
-    @adjustment.setter
-    def adjustment(self, adj: int) -> None:
-        self.stats.packet_adjustment = adj
-
-    @property
-    def endpoints(self) -> ty.Tuple[int, int]:
-        return self.stats.packet_endpoints
-
-    @endpoints.setter
-    def endpoints(self, _endpoints: ty.Tuple[int, int]) -> None:
-        self.stats.packet_endpoints = _endpoints
-
-
     def get_adjustment(self, look_ahead: int=100, threshold: float=0.5, check: bool=True) -> int:
         start, stop = 0, look_ahead
         adjustment = 0
