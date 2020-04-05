@@ -7,6 +7,8 @@ import typing as ty
 
 import matplotlib.pyplot as plt
 
+from lorapy.common import exceptions as exc
+from lorapy.common import constants
 from lorapy.packets._base_packet import BaseLoraPacket
 from lorapy.signals.stats import SignalStats  # TODO: circ import issue
 
@@ -14,7 +16,12 @@ from lorapy.signals.stats import SignalStats  # TODO: circ import issue
 
 class LoraPacket(BaseLoraPacket):
 
-    def __init__(self, data: np.array, stats: SignalStats):
+    _auto_adj_look_ahead = 100
+    _auto_adj_threshold = 0.5
+
+    _over_adj_limit = 1.5 * constants.padding_length
+
+    def __init__(self, data: np.array, stats: SignalStats, auto_adjust: bool=True):
         # inherit
         BaseLoraPacket.__init__(self, data, stats)
 
@@ -22,9 +29,13 @@ class LoraPacket(BaseLoraPacket):
         # self.stats
         # self.real_abs_data
 
+        self.adjustment: int = 0
+
+        if auto_adjust:
+            self.adjustment = self._auto_adjust()
 
 
-    def get_adjustment(self, look_ahead: int=100, threshold: float=0.8):
+    def get_adjustment(self, look_ahead: int=100, threshold: float=0.5) -> int:
         start, stop = 0, look_ahead
         adjustment = 0
 
@@ -67,4 +78,14 @@ class LoraPacket(BaseLoraPacket):
 
         plt.plot(self.real_abs_data[adjust:], *args, **kwargs)
         plt.show()
+
+
+    def _auto_adjust(self) -> int:
+        adjustment = self.get_adjustment(self._auto_adj_look_ahead, self._auto_adj_threshold)
+        self._check_over_adjustment(adjustment)
+        return adjustment
+
+
+    def _check_over_adjustment(self, adjust: int) -> None:
+        pass
 
