@@ -19,7 +19,8 @@ class LoraPacket(BaseLoraPacket):
     _auto_adj_look_ahead = 100
     _auto_adj_threshold = 0.5
 
-    _over_adj_limit = 1.5 * constants.padding_length
+    # _over_adj_limit = 1.5 * constants.padding_length
+    _over_adj_limit = 10_000  # test val
 
     def __init__(self, data: np.array, stats: SignalStats, auto_adjust: bool=True):
         # inherit
@@ -35,7 +36,7 @@ class LoraPacket(BaseLoraPacket):
             self.adjustment = self._auto_adjust()
 
 
-    def get_adjustment(self, look_ahead: int=100, threshold: float=0.5) -> int:
+    def get_adjustment(self, look_ahead: int=100, threshold: float=0.5, check: bool=True) -> int:
         start, stop = 0, look_ahead
         adjustment = 0
 
@@ -54,7 +55,7 @@ class LoraPacket(BaseLoraPacket):
                 break
 
         logger.info(f'got final adjustment: {adjustment}')
-        return adjustment
+        return self._check_over_adjustment(adjustment) if check else adjustment
 
 
     def biased_mean(self, bias: float=0.7) -> float:
@@ -82,10 +83,12 @@ class LoraPacket(BaseLoraPacket):
 
     def _auto_adjust(self) -> int:
         adjustment = self.get_adjustment(self._auto_adj_look_ahead, self._auto_adj_threshold)
-        self._check_over_adjustment(adjustment)
-        return adjustment
+        return self._check_over_adjustment(adjustment)
 
 
-    def _check_over_adjustment(self, adjust: int) -> None:
-        pass
+    def _check_over_adjustment(self, adjust: int) -> int:
+        if adjust > self._over_adj_limit:
+            raise exc.OverAdjustedPacketError(adjust, self._over_adj_limit)
+
+        return adjust
 
