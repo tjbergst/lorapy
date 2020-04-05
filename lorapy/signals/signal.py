@@ -7,7 +7,6 @@ import typing as ty
 
 from lorapy.common.utils import validate_str_option
 from lorapy.signals._base_signal import BaseLoraSignal
-from lorapy.common.stats import LoraStats
 from lorapy.signals.processing.sliding_mean import find_all_mindices
 from lorapy.packets import utils as packet_utils
 from lorapy.packets.packet import LoraPacket
@@ -21,16 +20,13 @@ class LoraSignal(BaseLoraSignal):
 
     def __init__(self, datafile: 'DatFile'):
         # inherit
-        BaseLoraSignal.__init__(self)
+        BaseLoraSignal.__init__(self, datafile)
 
         self._process_dict = {
             'slide-mean':       self._process_sliding_mean,
             '_placeholder':     None,
         }
 
-        # signal
-        self._raw_signal: np.array = datafile.data[:]
-        self.stats = datafile.stats
 
         # derived
         self.endpoint_list: ty.List[ty.Tuple[int, int]] = []
@@ -38,19 +34,6 @@ class LoraSignal(BaseLoraSignal):
         self.packets: ty.List[LoraPacket] = []
 
 
-
-
-    @property
-    def signal(self):
-        return self._raw_signal
-
-    @property
-    def real_signal(self) -> np.array:
-        return np.real(self._raw_signal)
-
-    @property
-    def real_abs_signal(self) -> np.array:
-        return np.abs(self.real_signal)
 
     @property
     def processing_options(self) -> list:
