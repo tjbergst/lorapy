@@ -30,14 +30,14 @@ class BaseLoraSignal:
         return len(self.packets)
 
     @property
-    def signal(self):
+    def data(self):
         return self._raw_signal
 
     @property
-    def real_signal(self) -> np.array:
+    def real_data(self) -> np.array:
         return np.real(self._raw_signal)
 
     @property
-    def real_abs_signal(self) -> np.array:
-        return np.abs(self.real_signal)
+    def real_abs_data(self) -> np.array:
+        return np.abs(self.real_data)
 
