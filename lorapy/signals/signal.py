@@ -7,7 +7,7 @@ import typing as ty
 
 from lorapy.common.utils import validate_str_option
 from lorapy.signals._base_signal import BaseLoraSignal
-from lorapy.signals.stats import SignalStats
+from lorapy.common.stats import SignalStats
 from lorapy.signals.processing.sliding_mean import find_all_mindices
 from lorapy.packets import utils as packet_utils
 from lorapy.packets.packet import LoraPacket

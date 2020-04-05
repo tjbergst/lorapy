@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 from lorapy.common import exceptions as exc
 from lorapy.common import constants
 from lorapy.packets._base_packet import BaseLoraPacket
-from lorapy.signals.stats import SignalStats  # TODO: circ import issue
+from lorapy.common.stats import SignalStats  # TODO: circ import issue
 
 
 

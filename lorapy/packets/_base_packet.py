@@ -1,7 +1,7 @@
 # base lora packet
 
 import numpy as np
-from lorapy.signals.stats import SignalStats  # TODO: circ import issue
+from lorapy.common.stats import SignalStats  # TODO: circ import issue
 
 
 class BaseLoraPacket:
