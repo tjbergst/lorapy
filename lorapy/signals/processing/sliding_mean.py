@@ -31,7 +31,7 @@ class SlidingMeanProcessor:
 
     @property
     def signal(self) -> np.array:
-        return self._lora_signal.real_abs_signal
+        return self._lora_signal.real_abs_data
 
 
     def extract(self):
