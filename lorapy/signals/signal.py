@@ -57,22 +57,22 @@ class LoraSignal(BaseLoraSignal):
         return list(self._process_dict.keys())
 
 
-    def extract_packets(self, method: str='slide-mean', **kwargs) -> None:
+    def extract_packets(self, method: str='slide-mean', auto_adj: bool=True, **kwargs) -> None:
         """ extract all packets and return array of [num_packets, packet_len]
             kwargs are available for processing method specific inputs
         """
 
         self.endpoints = self._process_signal(method, **kwargs)
         self._raw_packets = self._packet_utils.slice_all_packets(self.signal, self.endpoints)
-        self.packets = self._load_packets()
+        self.packets = self._load_packets(auto_adj)
         logger.debug(f'loaded {len(self.packets)} lora packets')
 
 
-    def _load_packets(self) -> ty.List[LoraPacket]:
+    def _load_packets(self, _auto_adj: bool) -> ty.List[LoraPacket]:
         """ loads packets into LoraPackets """
 
         return [
-            LoraPacket(packet, self.stats)
+            LoraPacket(packet, self.stats, _auto_adj)
             for packet in self._raw_packets
         ]
 
