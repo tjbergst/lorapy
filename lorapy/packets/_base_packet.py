@@ -6,10 +6,11 @@ from lorapy.signals.stats import SignalStats  # TODO: circ import issue
 
 class BaseLoraPacket:
 
-    def __init__(self, data: np.array, stats: SignalStats):
+    def __init__(self, data: np.array, stats: SignalStats, packet_id: int):
 
         self.data = data
         self.stats = stats
+        self.pid = packet_id
 
 
     def __repr__(self):
