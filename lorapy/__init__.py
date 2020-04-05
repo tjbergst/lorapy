@@ -7,6 +7,7 @@ from lorapy.io.load import DatLoader
 
 
 
-def load(data_path: ty.Union[pathlib.Path, str], autoload: bool=True) -> DatLoader:
-    return DatLoader(data_path, autoload)
+def load(data_path: ty.Union[pathlib.Path, str],
+         autoload: bool=True, glob_pattern: ty.Optional[str]=None) -> DatLoader:
+    return DatLoader(data_path, autoload, glob_pattern)
 
