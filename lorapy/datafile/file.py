@@ -3,7 +3,6 @@
 from loguru import logger
 import pathlib
 import numpy as np
-import typing as ty
 
 from lorapy.common.stats import LoraStats
 from lorapy.datafile._base_file import BaseDatFile
@@ -23,37 +22,32 @@ class DatFile(BaseDatFile):
         # inherit
         BaseDatFile.__init__(self, file_path)
 
-        # file params
-        self._file_bw, self._file_sf, self._file_att = None, None, None
-        self._samp_per_sym = None
-        self._packet_len = None
-
         # datafile
         self.data = None
 
-        # init tasks
-        # TODO: disabling actions until .load() is called, need to confirm
-        # self._compute_file_params()
+        # stats
+        self.stats = LoraStats(self)
+
 
     @property
     def bw(self) -> int:
-        return self._file_bw
+        return self.stats.bw
 
     @property
     def sf(self) -> int:
-        return self._file_sf
+        return self.stats.sf
 
     @property
     def att(self) -> int:
-        return self._file_att
+        return self.stats.att
 
     @property
     def samp_per_sym(self) -> int:
-        return self._samp_per_sym
+        return self.stats.samp_per_sym
 
     @property
     def packet_len(self) -> int:
-        return self._packet_len
+        return self.stats.packet_len
 
 
     def load(self) -> None:
@@ -63,7 +57,7 @@ class DatFile(BaseDatFile):
 
 
     def to_signal(self) -> LoraSignal:
-        if self._file_bw is None:
+        if self.stats.bw == 0:
             self.load()
 
         return LoraSignal(self)
@@ -80,11 +74,10 @@ class DatFile(BaseDatFile):
 
 
     def _compute_file_params(self) -> None:
-        self._file_bw = filename_utils.extract_value(self.name, self._pattern_bw)
-        self._file_sf = filename_utils.extract_value(self.name, self._pattern_sf)
-        self._file_att = filename_utils.extract_value(self.name, self._pattern_att)
+        self.stats.bw = filename_utils.extract_value(self.name, self._pattern_bw)
+        self.stats.sf = filename_utils.extract_value(self.name, self._pattern_sf)
+        self.stats.att = filename_utils.extract_value(self.name, self._pattern_att)
 
-        self._samp_per_sym, self._packet_len = encoding.compute_params(self)
-        # TODO: look into incoporating signal stats at this point?
+        self.stats.samp_per_sym, self.stats.packet_len = encoding.compute_params(self)
 
 
