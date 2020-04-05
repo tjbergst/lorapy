@@ -17,7 +17,8 @@ class LoraStats:
         self._samp_per_sym =    datafile.samp_per_sym
         self._packet_len =      datafile.packet_len
 
-        self._endpoints: ty.Tuple[int, int] = 0, 0
+        self._packet_endpoints: ty.Tuple[int, int] = 0, 0
+        self._packet_adjustment: int = 0
 
 
 

@@ -33,7 +33,7 @@ class LoraSignal(BaseLoraSignal):
         self.stats = LoraStats(datafile)
 
         # derived
-        self.endpoints: ty.List[ty.Tuple[int, int]] = []
+        self.endpoint_list: ty.List[ty.Tuple[int, int]] = []
         self._raw_packets: np.ndarray = np.empty((1, 1))
         self.packets: ty.List[LoraPacket] = []
 
@@ -64,12 +64,12 @@ class LoraSignal(BaseLoraSignal):
             # TODO: move packet adjusting into initial load
         """
 
-        self.endpoints = self._process_signal(method, **kwargs)
+        self.endpoint_list = self._process_signal(method, **kwargs)
         self._slice_and_load(auto_adj)
 
 
     def _slice_and_load(self, _auto_adj: bool) -> None:
-        self._raw_packets = self._packet_utils.slice_all_packets(self.signal, self.endpoints)
+        self._raw_packets = self._packet_utils.slice_all_packets(self.signal, self.endpoint_list)
         self.packets = self._load_packets(_auto_adj)
         logger.debug(f'loaded {len(self.packets)} lora packets')
 
@@ -89,11 +89,11 @@ class LoraSignal(BaseLoraSignal):
 
 
     def _adjust_endpoints(self) -> None:
-        self._old_endpoints = self.endpoints[:]  # TODO: dev
+        self._old_endpoints = self.endpoint_list[:]  # TODO: dev
 
-        self.endpoints = [
+        self.endpoint_list = [
             (start + pkt.adjustment, stop + pkt.adjustment)
-            for (start, stop), pkt in zip(self.endpoints, self.packets)
+            for (start, stop), pkt in zip(self.endpoint_list, self.packets)
         ]
         logger.debug(f'adjusted endpoints')
 
@@ -103,7 +103,7 @@ class LoraSignal(BaseLoraSignal):
 
         return [
             LoraPacket(packet, self.stats, pid, endpoints, _auto_adj)
-            for pid, (packet, endpoints) in enumerate(zip(self._raw_packets, self.endpoints))
+            for pid, (packet, endpoints) in enumerate(zip(self._raw_packets, self.endpoint_list))
         ]
 
 
