@@ -7,18 +7,20 @@ import typing as ty
 
 class LoraStats:
 
-    def __init__(self, datafile: 'DatFile'):
+    def __init__(self, datafile: 'DatFile', **kwargs):
 
-        self._filename =        datafile.name
+        self._filename =            datafile.name
 
-        self._bw =              datafile.bw
-        self._sf =              datafile.sf
-        self._att =             datafile.att
-        self._samp_per_sym =    datafile.samp_per_sym
-        self._packet_len =      datafile.packet_len
+        self._bw: int =             0
+        self._sf: int =             0
+        self._att: int =            0
+        self._samp_per_sym: int =   0
+        self._packet_len: int =     0
 
         self._packet_endpoints: ty.Tuple[int, int] = 0, 0
         self._packet_adjustment: int = 0
+
+        self._load_kwargs(**kwargs)
 
 
 
@@ -53,3 +55,7 @@ class LoraStats:
     def packet_len(self) -> int:
         return self._packet_len
 
+
+    def _load_kwargs(self, **kwargs) -> None:
+        for key, val in kwargs:
+            setattr(self, key, val)
