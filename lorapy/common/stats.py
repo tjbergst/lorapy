@@ -8,16 +8,22 @@ class LoraStats:
 
     def __init__(self, datafile: 'DatFile', **kwargs):
 
+        # file
         self._filename =            datafile.name
 
+        # signal stats
         self._bw: int =             0
         self._sf: int =             0
         self._att: int =            0
         self._samp_per_sym: int =   0
         self._packet_len: int =     0
 
+        # packet stats
         self.packet_endpoints: ty.Tuple[int, int] = 0, 0
         self.packet_adjustment: int = 0
+
+        # symbol stats
+        self.symbol_endpoints: ty.Tuple[int, int] = 0, 0
 
         self._load_kwargs(**kwargs)
 
