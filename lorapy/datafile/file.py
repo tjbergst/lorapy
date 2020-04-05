@@ -4,7 +4,6 @@ from loguru import logger
 import pathlib
 import numpy as np
 
-from lorapy.common.stats import LoraStats
 from lorapy.datafile._base_file import BaseDatFile
 from lorapy.datafile import encoding
 from lorapy.signals.signal import LoraSignal
@@ -25,30 +24,6 @@ class DatFile(BaseDatFile):
         # datafile
         self.data = None
 
-        # stats
-        self.stats = LoraStats(self)
-
-
-    @property
-    def bw(self) -> int:
-        return self.stats.bw
-
-    @property
-    def sf(self) -> int:
-        return self.stats.sf
-
-    @property
-    def att(self) -> int:
-        return self.stats.att
-
-    @property
-    def samp_per_sym(self) -> int:
-        return self.stats.samp_per_sym
-
-    @property
-    def packet_len(self) -> int:
-        return self.stats.packet_len
-
 
     def load(self) -> None:
         self._compute_file_params()
@@ -57,7 +32,7 @@ class DatFile(BaseDatFile):
 
 
     def to_signal(self) -> LoraSignal:
-        if self.stats.bw == 0:
+        if self.bw == 0:
             self.load()
 
         return LoraSignal(self)
@@ -74,10 +49,10 @@ class DatFile(BaseDatFile):
 
 
     def _compute_file_params(self) -> None:
-        self.stats.bw = filename_utils.extract_value(self.name, self._pattern_bw)
-        self.stats.sf = filename_utils.extract_value(self.name, self._pattern_sf)
-        self.stats.att = filename_utils.extract_value(self.name, self._pattern_att)
+        self.bw = filename_utils.extract_value(self.name, self._pattern_bw)
+        self.sf = filename_utils.extract_value(self.name, self._pattern_sf)
+        self.att = filename_utils.extract_value(self.name, self._pattern_att)
 
-        self.stats.samp_per_sym, self.stats.packet_len = encoding.compute_params(self)
+        self.samp_per_sym, self.packet_len = encoding.compute_params(self)
 
 
