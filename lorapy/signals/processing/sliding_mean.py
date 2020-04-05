@@ -55,7 +55,7 @@ class SlidingMeanProcessor:
         logger.info(f'scanning signal for padding locations..')
 
         while True:
-            if slice_num % 50 == 0:
+            if slice_num % 100 == 0:
                 logger.debug(f'iteration {slice_num}')
 
             try:
