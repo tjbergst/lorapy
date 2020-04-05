@@ -3,10 +3,13 @@
 import numpy as np
 import typing as ty
 
+from lorapy.common import constants
 from lorapy.common.stats import LoraStats  # TODO: circ import issue
 
 
 class BaseLoraSymbol:
+
+    _const = constants
 
     def __init__(self, data: np.array, stats: LoraStats, symbol_id: int, endpoints: ty.Tuple[int, int]):
 

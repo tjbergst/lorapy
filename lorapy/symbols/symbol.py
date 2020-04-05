@@ -5,7 +5,6 @@ from loguru import logger
 import numpy as np
 import typing as ty
 
-from lorapy.common import constants
 from lorapy.common.stats import LoraStats  # TODO: circ import issue
 from lorapy.symbols._base_symbol import BaseLoraSymbol
 
