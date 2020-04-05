@@ -1,8 +1,10 @@
 # lora symbol utils
 
-
+from loguru import logger
 import numpy as np
 import typing as ty
+
+# TODO: commonalize? packet slicing and symbol slicing
 
 
 def gen_preamble_endpoints(num_symbols: int, samp_per_sym: int) -> ty.List[ty.Tuple[int, int]]:
@@ -15,6 +17,18 @@ def gen_preamble_endpoints(num_symbols: int, samp_per_sym: int) -> ty.List[ty.Tu
     ]
 
 
-def slice_preamble_symbols(packet: np.array, endpoints: ty.List[ty.Tuple[int, int]]) -> np.ndarray:
-    pass
+def slice_preamble_symbols(packet: np.array, endpoint_list: ty.List[ty.Tuple[int, int]]) -> np.ndarray:
+    _symbols = np.vstack([
+        _slice_symbol(packet, endpoint_pair)
+        for endpoint_pair in endpoint_list
+    ])
 
+    logger.debug(f'extracted {_symbols.shape[0]} symbols with length {_symbols.shape[1]}')
+    return _symbols
+
+
+def _slice_symbol(data: np.array, endpoints: ty.Tuple[int, int]) -> np.array:
+    start, stop = endpoints
+    _slice = data[start:stop]
+
+    return _slice
