@@ -25,6 +25,7 @@ class LoraSymbol(BaseLoraSymbol):
 
 
 
+    # --------------------------------------- plotting methods ---------------------------------------
 
     def plot(self, real: bool=False, adjust: int=0, *args, **kwargs) -> None:
         return self._plot_symbol(real, adjust, *args, **kwargs)
