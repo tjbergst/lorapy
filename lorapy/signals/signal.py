@@ -3,6 +3,7 @@
 
 from loguru import logger
 import numpy as np
+import copy
 import typing as ty
 import matplotlib.pyplot as plt
 
@@ -47,6 +48,9 @@ class LoraSignal(BaseLoraSignal):
         """ extract all packets and return array of [num_packets, packet_len]
             kwargs are available for processing method specific inputs
 
+                slide-mean kwargs:
+                    overlap: float=0.5
+
             # TODO: move packet adjusting into initial load
         """
 
@@ -88,7 +92,7 @@ class LoraSignal(BaseLoraSignal):
         """ loads packets into LoraPackets """
 
         return [
-            LoraPacket(packet, self.stats, pid, endpoints, _auto_adj)
+            LoraPacket(packet, copy.copy(self.stats), pid, endpoints, _auto_adj)
             for pid, (packet, endpoints) in enumerate(zip(self._raw_packets, self.endpoint_list))
         ]
 

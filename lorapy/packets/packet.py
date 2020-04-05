@@ -3,6 +3,7 @@
 
 from loguru import logger
 import numpy as np
+import copy
 import typing as ty
 import matplotlib.pyplot as plt
 
@@ -130,6 +131,6 @@ class LoraPacket(BaseLoraPacket):
         """ loads symbols into LoraSymbols """
 
         return [
-            LoraSymbol(symbol, self.stats, sid, endpoints)
+            LoraSymbol(symbol, copy.copy(self.stats), sid, endpoints)
             for sid, (symbol, endpoints) in enumerate(zip(self._raw_symbols, self.endpoint_list))
         ]
