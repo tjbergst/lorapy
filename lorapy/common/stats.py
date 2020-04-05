@@ -1,10 +1,13 @@
 # signal stats
 
 import typing as ty
+from lorapy.common import constants
 # from lorapy.datafile.file import DatFile  # TODO: circ import issue
 
 
 class LoraStats:
+
+    const = constants
 
     def __init__(self, datafile: 'DatFile', **kwargs):
 
