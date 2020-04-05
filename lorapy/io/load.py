@@ -44,6 +44,7 @@ class DatLoader:
 
     @property
     def filelist(self) -> list:
+        # TODO: add filelist filtering capability
         return list(self.filegen)
 
 
