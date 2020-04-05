@@ -26,7 +26,7 @@ class LoraPacket(BaseLoraPacket):
                  packet_id: int, endpoints: ty.Tuple[int, int], auto_adjust: bool=True):
         # inherit
         BaseLoraPacket.__init__(self, data, stats, packet_id, endpoints)
-        # self.data, self.stats, self.real_abs_data
+        # self.stats, self.data, self.real_abs_data, self.pid
 
         if auto_adjust:
             self.auto_adjust()
