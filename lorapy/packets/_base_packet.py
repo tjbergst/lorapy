@@ -1,12 +1,12 @@
 # base lora packet
 
 import numpy as np
-# from lorapy.signals.stats import SignalStats  # TODO: circ import issue
+from lorapy.signals.stats import SignalStats  # TODO: circ import issue
 
 
 class BaseLoraPacket:
 
-    def __init__(self, data: np.array, stats: 'SignalStats'):
+    def __init__(self, data: np.array, stats: SignalStats):
 
         self.data = data
         self.stats = stats
