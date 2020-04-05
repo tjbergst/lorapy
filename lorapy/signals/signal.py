@@ -135,8 +135,11 @@ class LoraSignal(BaseLoraSignal):
 
 
     def plot_packet(self, real: bool=True, packet_num: ty.Optional[int]=None, **kwargs) -> None:
-        packet_num = packet_num if packet_num is not None else self._misc_utils.rand(self.num_packets)
+        if len(self.packets) == 0:
+            logger.warning(f'no packets to plot, extract packets first!')
+            return
 
+        packet_num = packet_num if packet_num is not None else self._misc_utils.rand(self.num_packets)
         return self._plot_packet(real, packet_num, **kwargs)
 
 
