@@ -63,19 +63,38 @@ class LoraSignal(BaseLoraSignal):
         """
 
         self.endpoints = self._process_signal(method, **kwargs)
+        self._slice_and_load(auto_adj)
+
+
+    def _slice_and_load(self, _auto_adj: bool) -> None:
         self._raw_packets = self._packet_utils.slice_all_packets(self.signal, self.endpoints)
-        self.packets = self._load_packets(auto_adj)
+        self.packets = self._load_packets(_auto_adj)
         logger.debug(f'loaded {len(self.packets)} lora packets')
+
+
+    def _adjust_packets(self) -> ty.List[LoraPacket]:
+        packets = [
+
+        ]
+
+        return packets
+
+
+    def _adjust_endpoints(self):
+        pass
+
 
 
     def _load_packets(self, _auto_adj: bool) -> ty.List[LoraPacket]:
         """ loads packets into LoraPackets """
 
         return [
-            LoraPacket(packet, self.stats, _auto_adj)
-            for packet in self._raw_packets
+            LoraPacket(packet, self.stats, pid, _auto_adj)
+            for pid, packet in enumerate(self._raw_packets)
         ]
 
+
+    # -------------------------------- processing methods --------------------------------
 
     def _process_signal(self, method: str, **kwargs) -> ty.List[ty.Tuple[int, int]]:
         """ processes signal using provided method
@@ -87,9 +106,6 @@ class LoraSignal(BaseLoraSignal):
 
         return self._process_dict[method](**kwargs)
 
-
-
-    # -------------------------------- processing methods --------------------------------
 
     def _process_sliding_mean(self, **kwargs) -> ty.List[ty.Tuple[int, int]]:
         endpoints = find_all_mindices(self, **kwargs)
