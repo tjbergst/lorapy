@@ -13,7 +13,7 @@ class BaseLoraPacket:
         self.stats = stats
         self.pid = packet_id
 
-        self.stats.packet_endpoints = endpoints
+        self.endpoints = endpoints
 
 
     def __repr__(self):
@@ -26,19 +26,19 @@ class BaseLoraPacket:
         yield from self.data
 
     @property
-    def min(self):
+    def min(self) -> float:
         return self.real_abs_data.min()
 
     @property
-    def max(self):
+    def max(self) -> float:
         return self.real_abs_data.max()
 
     @property
-    def mean(self):
+    def mean(self) -> float:
         return self.real_abs_data.mean()
 
     @property
-    def size(self):
+    def size(self) -> int:
         return self.data.size
 
     @property
