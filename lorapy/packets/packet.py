@@ -75,15 +75,17 @@ class LoraPacket(BaseLoraPacket):
         return biased_packet.mean()
 
 
-    def plot(self, adjust: int=0, *args, **kwargs) -> None:
-        return self._plot_packet(adjust, *args, **kwargs)
+    def plot(self, real: bool=True, adjust: int=0, *args, **kwargs) -> None:
+        return self._plot_packet(real, adjust, *args, **kwargs)
 
 
-    def _plot_packet(self, adjust: int=0, *args, **kwargs) -> None:
+    def _plot_packet(self, real: bool, adjust: int=0, *args, **kwargs) -> None:
         """ plots packet with future options """
         # TODO: incorporate lorapy.plotting
 
-        plt.plot(self.real_abs_data[adjust:], *args, **kwargs)
+        _data = self.real_abs_data if real else self.data
+
+        plt.plot(_data[adjust:], *args, **kwargs)
         plt.show()
 
 
