@@ -10,6 +10,8 @@ from lorapy.common import exceptions as exc
 from lorapy.common import constants
 from lorapy.common.stats import LoraStats  # TODO: circ import issue
 from lorapy.packets._base_packet import BaseLoraPacket
+from lorapy.symbols.symbol import LoraSymbol
+from lorapy.symbols import utils as sym_utils
 
 
 
@@ -22,12 +24,20 @@ class LoraPacket(BaseLoraPacket):
     # _over_adj_limit = 10_000  # test val
     _downgrade_overadj_error = True
 
+    _sym_utils = sym_utils
+
     def __init__(self, data: np.array, stats: LoraStats,
                  packet_id: int, endpoints: ty.Tuple[int, int], auto_adjust: bool=True):
         # inherit
         BaseLoraPacket.__init__(self, data, stats, packet_id, endpoints)
         # self.stats, self.data, self.real_abs_data, self.pid
 
+        # symbols
+        self.endpoint_list: ty.List[ty.Tuple[int, int]] = []
+        self._raw_symbols: np.ndarray = np.empty((1, 1))
+        self.symbols: ty.List[LoraSymbol] = []
+
+        # packet adjusting
         if auto_adjust:
             self.auto_adjust()
 
@@ -95,3 +105,27 @@ class LoraPacket(BaseLoraPacket):
 
         return adjust
 
+
+
+    # ------------------------------------------ SYMBOLS ------------------------------------------
+
+    def extract_preamble_symbols(self) -> None:
+        num_symbols, samp_per_sym = self.stats.const.num_symbols, self.stats.samp_per_sym
+        self.endpoint_list = self._sym_utils.gen_preamble_endpoints(num_symbols, samp_per_sym)
+
+        self._slice_and_load()
+
+
+    def _slice_and_load(self) -> None:
+        self._raw_symbols = self._sym_utils.slice_preamble_symbols(self.data, self.endpoint_list)
+        self.symbols = self._load_symbols()
+        logger.debug(f'loaded {len(self.symbols)} lora symbols')
+
+
+    def _load_symbols(self) -> ty.List[LoraSymbol]:
+        """ loads symbols into LoraSymbols """
+
+        return [
+            LoraSymbol(symbol, self.stats, sid, endpoints)
+            for sid, (symbol, endpoints) in enumerate(zip(self._raw_symbols, self.endpoint_list))
+        ]
