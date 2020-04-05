@@ -20,12 +20,15 @@ bw_values = {
 # TODO: find better name
 packet_length_scalar = 30.25
 
+# inter-packet padding
 # padding_length = 17_000
 padding_length = 2200
 
+# sampling frequency
 # Fs = int(1e6)
 Fs = int(20e3)
 
+# number of preamble symbols
 num_symbols = 8
 
 
