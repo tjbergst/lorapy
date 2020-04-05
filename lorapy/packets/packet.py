@@ -8,8 +8,8 @@ import matplotlib.pyplot as plt
 
 from lorapy.common import exceptions as exc
 from lorapy.common import constants
-from lorapy.packets._base_packet import BaseLoraPacket
 from lorapy.common.stats import LoraStats  # TODO: circ import issue
+from lorapy.packets._base_packet import BaseLoraPacket
 
 
 
@@ -22,13 +22,12 @@ class LoraPacket(BaseLoraPacket):
     # _over_adj_limit = 10_000  # test val
     _downgrade_overadj_error = True
 
-    def __init__(self, data: np.array, stats: LoraStats, packet_id: int,
-                 endpoints: ty.Tuple[int, int], auto_adjust: bool=True):
+    def __init__(self, data: np.array, stats: LoraStats,
+                 packet_id: int, endpoints: ty.Tuple[int, int], auto_adjust: bool=True):
         # inherit
-        BaseLoraPacket.__init__(self, data, stats, packet_id)
+        BaseLoraPacket.__init__(self, data, stats, packet_id, endpoints)
         # self.data, self.stats, self.real_abs_data
 
-        self.endpoints: ty.Tuple[int, int] = endpoints
         self.adjustment: int = 0
 
         if auto_adjust:
@@ -92,6 +91,7 @@ class LoraPacket(BaseLoraPacket):
         if adjust > self._over_adj_limit:
             if not self._downgrade_overadj_error:
                 raise exc.OverAdjustedPacketError(adjust, self._over_adj_limit)
+
             logger.warning(f'packet {self.pid} is set to be overadjusted [{adjust} / {self._over_adj_limit}]')
             return 0
 

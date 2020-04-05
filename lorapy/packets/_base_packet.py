@@ -1,16 +1,19 @@
 # base lora packet
 
 import numpy as np
+import typing as ty
 from lorapy.common.stats import LoraStats  # TODO: circ import issue
 
 
 class BaseLoraPacket:
 
-    def __init__(self, data: np.array, stats: LoraStats, packet_id: int):
+    def __init__(self, data: np.array, stats: LoraStats, packet_id: int, endpoints: ty.Tuple[int, int]):
 
         self.data = data
         self.stats = stats
         self.pid = packet_id
+
+        self.stats.packet_endpoints = endpoints
 
 
     def __repr__(self):
