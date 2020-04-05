@@ -19,8 +19,8 @@ class LoraPacket(BaseLoraPacket):
     _auto_adj_look_ahead = 100
     _auto_adj_threshold = 0.5
 
-    # _over_adj_limit = 1.5 * constants.padding_length
-    _over_adj_limit = 10_000  # test val
+    _over_adj_limit = 1.5 * constants.padding_length
+    # _over_adj_limit = 10_000  # test val
 
     def __init__(self, data: np.array, stats: SignalStats, auto_adjust: bool=True):
         # inherit
