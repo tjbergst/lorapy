@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from lorapy.common import exceptions as exc
 from lorapy.common import constants
 from lorapy.packets._base_packet import BaseLoraPacket
-from lorapy.signals.stats import SignalStats  # TODO: circ import issue
+# from lorapy.signals.stats import SignalStats  # TODO: circ import issue
 
 
 
@@ -20,7 +20,7 @@ class LoraPacket(BaseLoraPacket):
     _over_adj_limit = 1.5 * constants.padding_length
     # _over_adj_limit = 10_000  # test val
 
-    def __init__(self, data: np.array, stats: SignalStats, auto_adjust: bool=True):
+    def __init__(self, data: np.array, stats: 'SignalStats', auto_adjust: bool=True):
         # inherit
         BaseLoraPacket.__init__(self, data, stats)
         # self.data, self.stats, self.real_abs_data
