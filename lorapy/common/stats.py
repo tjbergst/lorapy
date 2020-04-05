@@ -73,8 +73,9 @@ class LoraStats:
 
     @property
     def samp_per_sym(self) -> int:
-        patch_val = int(self._samp_per_sym * 9.75)  # TODO: dev patch
-        return patch_val
+        # patch_val = int(self._samp_per_sym * 9.75)  # TODO: dev patch
+        # return patch_val
+        return self._samp_per_sym
 
     @samp_per_sym.setter
     def samp_per_sym(self, _samp_per_sym: int) -> None:
