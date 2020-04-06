@@ -3,17 +3,24 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
+import typing as ty
 
+from lorapy.utils import misc as misc_utils
 # from lorapy.datafile.file import DotPFile  # TODO: circ import issue
 
 
 
 class BaselineSymbolSet:
 
+    _misc_utils = misc_utils
+
     def __init__(self, dot_p: 'DotPFile'):
 
         self.data = dot_p.data
         self.stats = dot_p.stats
+
+        # for random symbol plotting identification
+        self._lastrand: int = -1
 
 
 
@@ -46,18 +53,25 @@ class BaselineSymbolSet:
     def conj_data(self) -> np.array:
         return np.conj(self.data[::-1])
 
+    @property
+    def random_symbol(self):
+        randnum = self._misc_utils.rand(self.num_symbols - 1)
+        self._lastrand = randnum
+        return self.data[randnum, :]
 
-    def plot(self, symbol_num: int, real: bool=False, *args, **kwargs) -> None:
+
+    def plot(self, symbol_num: ty.Optional[int]=None, real: bool=False, *args, **kwargs) -> None:
         return self._plot_symbol(symbol_num, real, *args, **kwargs)
 
 
-    def _plot_symbol(self, symbol_num: int, real: bool, *args, **kwargs) -> None:
+    def _plot_symbol(self, _symbol_num: int, _real: bool, *args, **kwargs) -> None:
         """ plots packet with future options """
         # TODO: incorporate lorapy.plotting
 
-        _data = self.real_abs_data if real else self.data
+        _data = self.real_abs_data if _real else self.data
+        _symbol = _data[_symbol_num, :] if _symbol_num is not None else self.random_symbol
 
-        plt.plot(_data[symbol_num, :], *args, **kwargs)
-        plt.title(f'symbol num: {symbol_num}')
+        plt.plot(_symbol, *args, **kwargs)
+        plt.title(f'symbol num: {self._lastrand}')
         plt.show()
 
