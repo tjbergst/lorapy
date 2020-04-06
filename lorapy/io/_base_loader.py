@@ -6,6 +6,7 @@ import pathlib
 import typing as ty
 
 from lorapy.common import paths
+from lorapy.utils import filename
 
 # TODO: add .select(id=XX) method, add .filter(BW=X, SF=X) method
 
@@ -16,6 +17,7 @@ class BaseLoader:
     _file_class = None
 
     _path_utils = paths
+    _filename_utils = filename
 
     def __init__(self, data_path: ty.Union[pathlib.Path, str],
                  autoload: bool=True, glob_pattern: ty.Optional[str]=None):
@@ -54,25 +56,42 @@ class BaseLoader:
         return tar_filelist[0]
 
 
-    def filter(self, bw: ty.Optional[int]=None, sf: ty.Optional[int]=None, att: ty.Optional[int]=None):
-        pass
+    def filter(self, bw: ty.Optional[int]=None,
+               sf: ty.Optional[int]=None, att: ty.Optional[int]=None, gen: bool=True):
+        filegen = self._filegen
 
+        if bw is not None:
+            _match_val = self._filename_utils.format_bw_match(bw)
+            filegen = self._path_utils.filter_file_generator(filegen, _match_val)
+
+        if sf is not None:
+            _match_val = self._filename_utils.format_sf_match(sf)
+            filegen = self._path_utils.filter_file_generator(filegen, _match_val)
+
+        if att is not None:
+            _match_val = self._filename_utils.format_att_match(att)
+            filegen = self._path_utils.filter_file_generator(filegen, _match_val)
+
+        return filegen if gen else list(filegen)
 
 
     @property
     def file_path(self):
+        """ reference data file if input was data dir, else input data file """
         if self.data_file is None:
             raise FileNotFoundError('no datafile available')
         return self.data_file
 
     @property
     def filegen(self) -> ty.Generator:
+        """ loaded or unloaded file generator """
         if self._autoload:
             return (self._load_file(path, idx) for idx, path in enumerate(self._filegen))
         return self._filegen
 
     @property
     def _filegen(self) -> ty.Generator:
+        """ unloaded pathlib.Path file generator """
         return self._path_utils.glob_files(self.data_dir, self._glob_pattern)
 
     @property
