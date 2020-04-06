@@ -52,6 +52,10 @@ class BaseLoraSymbol:
         return np.real(np.abs(self.data))
 
     @property
+    def conj_data(self) -> np.array:
+        return np.conj(self.data[::-1])
+
+    @property
     def endpoints(self) -> ty.Tuple[int, int]:
         return self.stats.symbol_endpoints
 
