@@ -3,11 +3,14 @@
 import pathlib
 import typing as ty
 
-from lorapy.io.load import DatLoader
+from lorapy.io import load
 
 
 
-def load(data_path: ty.Union[pathlib.Path, str],
-         autoload: bool=True, glob_pattern: ty.Optional[str]=None) -> DatLoader:
-    return DatLoader(data_path, autoload, glob_pattern)
+def load_dat(data_path: ty.Union[pathlib.Path, str], autoload: bool=True, **kwargs) -> load.DatLoader:
+    return load.DatLoader(data_path, autoload, **kwargs)
+
+
+def load_dotp(data_path: ty.Union[pathlib.Path, str], autoload: bool=True, **kwargs) -> load.DotPLoader:
+    return load.DotPLoader(data_path, autoload, **kwargs)
 
