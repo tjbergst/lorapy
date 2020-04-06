@@ -1,5 +1,6 @@
 # base lora packet
 
+from loguru import logger
 import numpy as np
 import typing as ty
 
@@ -78,6 +79,7 @@ class BaseLoraPacket:
     @property
     def random_symbol(self):
         if len(self.symbols) == 0:
+            logger.warning(f'no symbols exist, extract symbols first!')
             return
 
         randnum = self._misc_utils.rand(self.stats.const.num_symbols - 1)

@@ -1,6 +1,6 @@
 # base lora signal
 
-
+from loguru import logger
 import numpy as np
 
 from lorapy.utils import misc as misc_utils
@@ -47,6 +47,7 @@ class BaseLoraSignal:
     @property
     def random_packet(self):
         if len(self.packets) == 0:
+            logger.warning(f'no packets exist, extract packets first!')
             return
 
         randnum = self._misc_utils.rand(self.num_packets - 1)
