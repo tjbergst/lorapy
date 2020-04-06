@@ -18,7 +18,7 @@ class BaselineSymbolSet:
 
 
     def __repr__(self):
-        return f"{self.__class__.__name__}(num symbols={self.size} | {self.stats})"
+        return f"{self.__class__.__name__}(num symbols={self.num_symbols} | {self.stats})"
         # TODO: note, can add more params like bw, sf, etc but would require a .load()
 
     def __getitem__(self, item):
@@ -33,6 +33,10 @@ class BaselineSymbolSet:
     @property
     def size(self):
         return self.data.size
+
+    @property
+    def num_symbols(self):
+        return self.data.shape[0]
 
     @property
     def real_abs_data(self) -> np.array:
