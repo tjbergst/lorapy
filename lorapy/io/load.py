@@ -24,8 +24,8 @@ class DatLoader:
         self._autoload = autoload
         self._glob_pattern = glob_pattern if glob_pattern is not None else self._glob_pattern
 
-        self.data_file: pathlib.Path() = None
-        self.data_dir: pathlib.Path() = self._validate_data_path(data_path)
+        self.data_file: pathlib.Path = pathlib.Path()
+        self.data_dir: pathlib.Path = self._validate_data_path(data_path)
 
 
     @property
