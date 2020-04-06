@@ -13,6 +13,7 @@ from lorapy.common import paths
 class BaseLoader:
 
     _glob_pattern = '**/*.dat'
+    _file_class = None
 
     _path_utils = paths
 
@@ -61,6 +62,5 @@ class BaseLoader:
 
 
     def _load_file(self, path: pathlib.Path):
-        # TODO: defined on sublcass
-        pass
+        return self._file_class(path)
 
