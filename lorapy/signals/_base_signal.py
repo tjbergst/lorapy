@@ -24,6 +24,15 @@ class BaseLoraSignal:
     def __repr__(self):
         return f"{self.__class__.__name__}(length={self.size}) | {self.stats}"
 
+    def __getitem__(self, item):
+        return self.data.__getitem__(item)
+
+    def __setitem__(self, item):
+        return self.data.__setitem__(item)
+
+    def __delitem__(self, item):
+        return self.data.__delitem__(item)
+
     @property
     def size(self) -> int:
         return self._raw_signal.size

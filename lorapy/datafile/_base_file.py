@@ -32,6 +32,15 @@ class BaseDataFile:
         return f"{self.__class__.__name__}(id={self.file_id} | name='{self.name}')"
         # TODO: note, can add more params like bw, sf, etc but would require a .load()
 
+    def __getitem__(self, item):
+        return self.data.__getitem__(item)
+
+    def __setitem__(self, item):
+        return self.data.__setitem__(item)
+
+    def __delitem__(self, item):
+        return self.data.__delitem__(item)
+
 
     def to_signal(self):
         if self.size == 0:

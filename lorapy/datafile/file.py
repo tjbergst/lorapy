@@ -19,7 +19,7 @@ class DatFile(BaseDataFile):
         BaseDataFile.__init__(self, file_path, file_id)
 
 
-    def _load_file(self) -> np.array:
+    def _load_file(self) -> np.ndarray:
         try:
             signal = np.fromfile(self.file_path, dtype=np.complex64)
         except Exception as exc:
