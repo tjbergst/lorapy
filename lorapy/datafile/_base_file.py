@@ -37,6 +37,12 @@ class BaseDataFile:
         if self.size == 0:
             self.load()
 
+        return self._to_signal()
+
+
+    def _to_signal(self):
+        if self._datafile_class is None:
+            raise NotImplementedError('no `cls._datafile_class` is set, unable to load signal')
         return self._datafile_class(self)
 
 
