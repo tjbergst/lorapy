@@ -1,7 +1,11 @@
 # base datfile class
 
+from loguru import logger
+import numpy as np
 import pathlib
 
+from lorapy.utils import filename as filename_utils
+from lorapy.datafile import encoding
 from lorapy.common.stats import LoraStats  # TODO: circ import issue
 
 
@@ -12,11 +16,14 @@ class BaseDataFile:
     _pattern_sf =   r'SF(\d{1,})'
     _pattern_att =  r'Att(\d{1,})'
 
+    _datafile_class = None
+
     def __init__(self, file_path: pathlib.Path, file_id: int):
 
         self.file_path: pathlib.Path = file_path
         self.file_id: int = file_id
 
+        self.data: np.array = np.empty(0)
         self.stats: LoraStats = LoraStats(self)
 
 
@@ -26,10 +33,38 @@ class BaseDataFile:
         # TODO: note, can add more params like bw, sf, etc but would require a .load()
 
 
+    def to_signal(self):
+        if self.size == 0:
+            self.load()
+
+        return self._datafile_class(self)
+
+
+    def load(self) -> None:
+        self._compute_file_params()
+        self.data = self._load_file()
+        logger.info(f'loaded {self.data.size} samples from file')
+
+
+    def _compute_file_params(self) -> None:
+        self.bw = filename_utils.extract_value(self.name, self._pattern_bw)
+        self.sf = filename_utils.extract_value(self.name, self._pattern_sf)
+        self.att = filename_utils.extract_value(self.name, self._pattern_att, suppress_error=True)
+
+        self.samp_per_sym, self.packet_len = encoding.compute_params(self)
+
+
+    def _load_file(self) -> np.array:
+        pass
+
 
     @property
     def name(self) -> str:
         return self.file_path.name
+
+    @property
+    def size(self) -> int:
+        return self.data.size
 
     @property
     def bw(self) -> int:
