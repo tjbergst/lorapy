@@ -18,9 +18,9 @@ class DatFile(BaseDatFile):
     _pattern_sf =   r'SF(\d{1,})'
     _pattern_att =  r'Att(\d{1,})'
 
-    def __init__(self, file_path: pathlib.Path):
+    def __init__(self, file_path: pathlib.Path, file_id: int):
         # inherit
-        BaseDatFile.__init__(self, file_path)
+        BaseDatFile.__init__(self, file_path, file_id)
 
         # datafile
         self.data = None
