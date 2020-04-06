@@ -10,6 +10,7 @@ class LoraStats:
     const = constants
 
     def __init__(self, datafile: 'DatFile', **kwargs):
+        # TODO: update datafile reference to any subclass of BaseDataFile?
 
         # file
         self._filename =            datafile.name
