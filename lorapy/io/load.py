@@ -28,32 +28,6 @@ class DatLoader(BaseLoader):
         logger.info('initialized DatLoader')
 
 
-    @property
-    def filepath(self) -> ty.Union[pathlib.Path, DatFile]:
-        if self.data_file is None:
-            raise FileNotFoundError('no datafile available')
-
-        return self.data_file
-
-
-    @property
-    def filegen(self) -> ty.Generator:
-        _file_generator = self._path_utils.glob_files(self.data_dir, self._glob_pattern)
-
-        if self._autoload:
-            return (self._load_file(path) for path in _file_generator)
-
-        return _file_generator
-
-
-    @property
-    def filelist(self) -> list:
-        # TODO: add filelist filtering capability
-        return list(self.filegen)
-
-
-
-
 
 
 
