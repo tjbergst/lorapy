@@ -7,7 +7,6 @@ import typing as ty
 
 from lorapy.common import paths
 
-# TODO: assign each DatFile and id and add it to the repr
 # TODO: add .select(id=XX) method, add .filter(BW=X, SF=X) method
 
 
@@ -35,27 +34,56 @@ class BaseLoader:
         return f"{self.__class__.__name__}(glob pattern: {self._glob_pattern} | data dir: {self.data_dir})"
 
 
+    def select(self, file_id: int):
+        """
+        returns file with matching `file_id`
+        requires that `autoload` be set on loader init
+
+        :param file_id: int file id, subclass specific *File property `file_id`
+        :return: subclass specific *File
+        """
+
+        if file_id not in self.file_ids:
+            raise ValueError(f'invalid file id: {file_id}')
+
+        tar_filelist = [file for file in self.file_list if file.file_id == file_id]
+
+        if len(tar_filelist) == 0:
+            # TODO: this is safety net, should also catch len(filelist) > 1?
+            raise ValueError(f'unable to find selected file id: {file_id}')
+        return tar_filelist[0]
+
+
+    def filter(self, bw: ty.Optional[int]=None, sf: ty.Optional[int]=None, att: ty.Optional[int]=None):
+        pass
+
+
+
     @property
     def file_path(self):
         if self.data_file is None:
             raise FileNotFoundError('no datafile available')
-
         return self.data_file
-
 
     @property
     def filegen(self) -> ty.Generator:
-        _file_generator = self._path_utils.glob_files(self.data_dir, self._glob_pattern)
-
         if self._autoload:
-            return (self._load_file(path, idx) for idx, path in enumerate(_file_generator))
+            return (self._load_file(path, idx) for idx, path in enumerate(self._filegen))
+        return self._filegen
 
-        return _file_generator
-
+    @property
+    def _filegen(self) -> ty.Generator:
+        return self._path_utils.glob_files(self.data_dir, self._glob_pattern)
 
     @property
     def file_list(self) -> list:
         return list(self.filegen)
+
+    @property
+    def file_ids(self) -> ty.Set[int]:
+        if not self._autoload:
+            raise AttributeError('no file ids available, please activate `autoload`')
+        return set(file.file_id for file in self.filegen)
 
 
     def _validate_data_path(self, path: ty.Union[pathlib.Path, str]) -> ty.Optional[pathlib.Path]:
