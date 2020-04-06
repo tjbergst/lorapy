@@ -32,7 +32,7 @@ class LoraSymbol(BaseLoraSymbol):
         symbol, symbol_conj = self.data, self.conj_data
         baseline = baseline[0: self.stats.samp_per_sym]
 
-        conv_val = self._conv.convolve_symbols(baseline, symbol, symbol_conj)
+        conv_val = self._conv.convolve_symbols(baseline, symbol, symbol_conj, _max=True)
 
         logger.debug(f'convolved symbol with baseline: {conv_val}')
         return conv_val
