@@ -49,7 +49,7 @@ class BaseDataFile:
     def load(self) -> None:
         self._compute_file_params()
         self.data = self._load_file()
-        logger.info(f'loaded {self.data.size} samples from file')
+        logger.info(f'loaded {self.size} samples from file')
 
 
     def _compute_file_params(self) -> None:
