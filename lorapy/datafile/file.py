@@ -10,6 +10,7 @@ from lorapy.signals.signal import LoraSignal
 from lorapy.utils import filename as filename_utils
 
 
+# TODO: add file id input and __repr__ update
 
 class DatFile(BaseDatFile):
 
