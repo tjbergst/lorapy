@@ -8,6 +8,10 @@ from lorapy.common.stats import LoraStats  # TODO: circ import issue
 
 class BaseDatFile:
 
+    _pattern_bw =   r'BW(\d)'
+    _pattern_sf =   r'SF(\d{1,})'
+    _pattern_att =  r'Att(\d{1,})'
+
     def __init__(self, file_path: pathlib.Path, file_id: int):
 
         self.file_path: pathlib.Path = file_path

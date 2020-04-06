@@ -14,10 +14,6 @@ from lorapy.utils import filename as filename_utils
 
 class DatFile(BaseDatFile):
 
-    _pattern_bw =   r'BW(\d)'
-    _pattern_sf =   r'SF(\d{1,})'
-    _pattern_att =  r'Att(\d{1,})'
-
     def __init__(self, file_path: pathlib.Path, file_id: int):
         # inherit
         BaseDatFile.__init__(self, file_path, file_id)
