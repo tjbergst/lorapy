@@ -3,7 +3,7 @@
 import pathlib
 import typing as ty
 
-from lorapy.io.load_dat import DatLoader
+from lorapy.io.load import DatLoader
 
 
 
