@@ -9,11 +9,13 @@ import matplotlib.pyplot as plt
 from lorapy.common.stats import LoraStats  # TODO: circ import issue
 from lorapy.symbols._base_symbol import BaseLoraSymbol
 from lorapy.symbols import processing
+from lorapy.symbols import convolution
 
 
 class LoraSymbol(BaseLoraSymbol):
 
     _proc = processing
+    _conv = convolution
 
     def __init__(self, data: np.array, stats: LoraStats, symbol_id: int, endpoints: ty.Tuple[int, int]):
         # inherit
@@ -21,6 +23,19 @@ class LoraSymbol(BaseLoraSymbol):
         # self.stats, self.data, self.real_abs_data, self.sid
 
         #
+
+
+
+    # --------------------------------------- convolution ---------------------------------------
+
+    def convolve(self, baseline: np.array) -> float:
+        symbol, symbol_conj = self.data, self.conj_data
+        baseline = baseline[0: self.stats.samp_per_sym]
+
+        conv_val = self._conv.convolve_symbols(baseline, symbol, symbol_conj)
+
+        logger.debug(f'convolved symbol with baseline: {conv_val}')
+        return conv_val
 
 
 
