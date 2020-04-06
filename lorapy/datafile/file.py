@@ -4,7 +4,7 @@ from loguru import logger
 import pathlib
 import numpy as np
 
-from lorapy.datafile._base_file import BaseDatFile
+from lorapy.datafile._base_file import BaseDataFile
 from lorapy.datafile import encoding
 from lorapy.signals.signal import LoraSignal
 from lorapy.utils import filename as filename_utils
@@ -12,11 +12,11 @@ from lorapy.utils import filename as filename_utils
 
 # TODO: add file id input and __repr__ update
 
-class DatFile(BaseDatFile):
+class DatFile(BaseDataFile):
 
     def __init__(self, file_path: pathlib.Path, file_id: int):
         # inherit
-        BaseDatFile.__init__(self, file_path, file_id)
+        BaseDataFile.__init__(self, file_path, file_id)
 
         # datafile
         self.data = None

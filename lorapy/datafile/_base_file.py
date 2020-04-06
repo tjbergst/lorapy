@@ -6,7 +6,7 @@ from lorapy.common.stats import LoraStats  # TODO: circ import issue
 
 
 
-class BaseDatFile:
+class BaseDataFile:
 
     _pattern_bw =   r'BW(\d)'
     _pattern_sf =   r'SF(\d{1,})'
