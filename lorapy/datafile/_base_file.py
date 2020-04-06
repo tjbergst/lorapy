@@ -8,16 +8,17 @@ from lorapy.common.stats import LoraStats  # TODO: circ import issue
 
 class BaseDatFile:
 
-    def __init__(self, file_path: pathlib.Path):
+    def __init__(self, file_path: pathlib.Path, file_id: int):
 
         self.file_path: pathlib.Path = file_path
+        self.file_id: int = file_id
 
         self.stats: LoraStats = LoraStats(self)
 
 
 
     def __repr__(self):
-        return f"{self.__class__.__name__}('{self.name}')"
+        return f"{self.__class__.__name__}(id={self.file_id} | name='{self.name}')"
         # TODO: note, can add more params like bw, sf, etc but would require a .load()
 
 
