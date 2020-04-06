@@ -43,6 +43,7 @@ class LoraPacket(BaseLoraPacket):
             self.auto_adjust()
 
 
+    # TODO: explore why adjustment not being stored when called from signal
     def get_adjustment(self, look_ahead: int=100, threshold: float=0.5, check: bool=True) -> int:
         start, stop = 0, look_ahead
         adjustment = 0
