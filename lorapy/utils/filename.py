@@ -24,3 +24,16 @@ def extract_value(filename: str, pattern: str, suppress_error: bool=False) -> in
 
     _int_match = int(match_val[1])
     return _int_match
+
+
+def format_bw_match(value: int) -> str:
+    return f'BW{value}'
+
+
+def format_sf_match(value: int) -> str:
+    return f'SF{value}'
+
+
+def format_att_match(value: int) -> str:
+    return f'Att{value}'
+
