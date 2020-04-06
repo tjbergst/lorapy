@@ -72,6 +72,6 @@ class BaselineSymbolSet:
         _symbol = _data[_symbol_num, :] if _symbol_num is not None else self.random_symbol
 
         plt.plot(_symbol, *args, **kwargs)
-        plt.title(f'symbol num: {self._lastrand}')
+        plt.title(f'symbol num: {self._lastrand if _symbol_num is None else _symbol_num}')
         plt.show()
 
