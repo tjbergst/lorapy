@@ -44,7 +44,6 @@ class BaseLoader:
 
 
     def _validate_data_path(self, path: ty.Union[pathlib.Path, str]) -> pathlib.Path:
-        # noinspection DuplicatedCode
         if not isinstance(path, pathlib.Path):
             path = pathlib.Path(path)
 
@@ -53,16 +52,12 @@ class BaseLoader:
 
         if path.is_file():
             logger.info(f'validated datafile file at {path}')
-            self.data_file = self._load_file(path)
-
-            # self.data_file = self._load_dat_file(path) if self._autoload else path
+            self.data_file = self._load_file(path) if self._autoload else path
 
             logger.debug(f'set datafile directory: {path.parent}')
             return path.parent
 
-        # TODO: process data dir?
-        # return self._process_data_dir(path)
-        return path
+        return self._process_data_dir(path)
 
 
     def _load_file(self, path: pathlib.Path):
