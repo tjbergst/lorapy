@@ -58,6 +58,17 @@ class BaseLoader:
 
     def filter(self, bw: ty.Optional[int]=None,
                sf: ty.Optional[int]=None, att: ty.Optional[int]=None, gen: bool=False):
+        """
+        filters available data files by any of provided bw, sf, and att with option to return
+        original generator
+
+        :param bw: int bw val
+        :param sf: int sf val
+        :param att: int att val
+        :param gen: bool to return generator object instead of list
+        :return: list (or generator) of filtered files
+        """
+
         filegen = self.filegen
 
         if bw is not None:
