@@ -57,8 +57,8 @@ class BaseLoader:
 
 
     def filter(self, bw: ty.Optional[int]=None,
-               sf: ty.Optional[int]=None, att: ty.Optional[int]=None, gen: bool=True):
-        filegen = self._filegen
+               sf: ty.Optional[int]=None, att: ty.Optional[int]=None, gen: bool=False):
+        filegen = self.filegen
 
         if bw is not None:
             _match_val = self._filename_utils.format_bw_match(bw)
