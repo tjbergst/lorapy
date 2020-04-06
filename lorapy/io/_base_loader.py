@@ -32,6 +32,30 @@ class BaseLoader:
         return f"{self.__class__.__name__}(glob pattern: {self._glob_pattern} | data dir: {self.data_dir})"
 
 
+    @property
+    def filepath(self):
+        if self.data_file is None:
+            raise FileNotFoundError('no datafile available')
+
+        return self.data_file
+
+
+    @property
+    def filegen(self) -> ty.Generator:
+        _file_generator = self._path_utils.glob_files(self.data_dir, self._glob_pattern)
+
+        if self._autoload:
+            return (self._load_file(path) for path in _file_generator)
+
+        return _file_generator
+
+
+    @property
+    def filelist(self) -> list:
+        # TODO: add filelist filtering capability
+        return list(self.filegen)
+
+
     def _process_data_dir(self, data_dir: pathlib.Path) -> pathlib.Path:
         logger.debug(f'set datafile directory: {data_dir}')
         file_list = list(self._path_utils.glob_files(data_dir, self._glob_pattern))

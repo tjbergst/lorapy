@@ -52,16 +52,6 @@ class DatLoader(BaseLoader):
         return list(self.filegen)
 
 
-    # def _load_file(self, path: pathlib.Path):
-    #     pass
-
-    # @staticmethod
-    # def _load_dat_file(filepath: pathlib.Path) -> DatFile:
-    #     return DatFile(filepath)
-    #
-    #
-
-
 
 
 
