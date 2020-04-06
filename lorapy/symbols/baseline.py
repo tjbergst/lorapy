@@ -4,13 +4,13 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from lorapy.datafile.file import DotPFile
+# from lorapy.datafile.file import DotPFile  # TODO: circ import issue
 
 
 
-class BaselineSymbol:
+class BaselineSymbolSet:
 
-    def __init__(self, dot_p: DotPFile):
+    def __init__(self, dot_p: 'DotPFile'):
 
         self.data = dot_p.data
         self.stats = dot_p.stats
@@ -18,7 +18,7 @@ class BaselineSymbol:
 
 
     def __repr__(self):
-        return f"{self.__class__.__name__}({self.stats})"
+        return f"{self.__class__.__name__}(num symbols={self.size} | {self.stats})"
         # TODO: note, can add more params like bw, sf, etc but would require a .load()
 
     def __getitem__(self, item):
@@ -29,6 +29,10 @@ class BaselineSymbol:
 
     def __delitem__(self, item):
         return self.data.__delitem__(item)
+
+    @property
+    def size(self):
+        return self.data.size
 
     @property
     def real_abs_data(self) -> np.array:

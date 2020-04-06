@@ -7,6 +7,7 @@ import pickle
 
 from lorapy.datafile._base_file import BaseDataFile
 from lorapy.signals.signal import LoraSignal
+from lorapy.symbols.baseline import BaselineSymbolSet
 
 
 
@@ -32,6 +33,8 @@ class DatFile(BaseDataFile):
 
 
 class DotPFile(BaseDataFile):
+
+    _datafile_class = BaselineSymbolSet
 
     def __init__(self, file_path: pathlib.Path, file_id: int):
         # inherit
