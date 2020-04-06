@@ -23,8 +23,8 @@ class BaseLoader:
         self._autoload = autoload
         self._glob_pattern = glob_pattern if glob_pattern is not None else self._glob_pattern
 
-        self.data_file = None
-        self.data_dir: pathlib.Path = self._validate_data_path(data_path)
+        self.data_file = None  # ty.Union[pathlib.Path, BaseLoader._file_class]
+        self.data_dir: ty.Optional[pathlib.Path] = self._validate_data_path(data_path)
 
 
 
@@ -68,7 +68,16 @@ class BaseLoader:
         return data_dir
 
 
-    def _validate_data_path(self, path: ty.Union[pathlib.Path, str]) -> pathlib.Path:
+    def _validate_data_path(self, path: ty.Union[pathlib.Path, str]) -> ty.Optional[pathlib.Path]:
+        """
+        takes input data path and first checks for existence
+        if file, sets `data_file` according to `_autoload` and sets `data_dir` to `None`
+        if dir, passes off to `_process_data_dir()`
+
+        :param path: data path (file or dir)
+        :return: path if input dir, else None
+        """
+
         if not isinstance(path, pathlib.Path):
             path = pathlib.Path(path)
 
@@ -78,9 +87,7 @@ class BaseLoader:
         if path.is_file():
             logger.info(f'validated datafile file at {path}')
             self.data_file = self._load_file(path) if self._autoload else path
-
-            logger.debug(f'set datafile directory: {path.parent}')
-            return path.parent
+            return None
 
         return self._process_data_dir(path)
 
