@@ -28,5 +28,5 @@ def _samples_per_sym(file: 'DatFile') -> int:
 
 
 def _packet_length(samples: int) -> int:
-    _value = int(constants.packet_length_scalar * samples)
+    _value = int(constants.packet_length_scalar * samples * 9.75)
     return _value
