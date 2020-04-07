@@ -1,17 +1,19 @@
 # lora baseline symbol for convolve comparison
 
-
+from loguru import logger
 import numpy as np
 import matplotlib.pyplot as plt
 import typing as ty
 
 from lorapy.utils import misc as misc_utils
+from lorapy.symbols import convolution
 # from lorapy.datafile.file import DotPFile  # TODO: circ import issue
 
 
 
 class BaselineSymbolSet:
 
+    _conv = convolution
     _misc_utils = misc_utils
 
     def __init__(self, dot_p: 'DotPFile'):
@@ -26,7 +28,6 @@ class BaselineSymbolSet:
 
     def __repr__(self):
         return f"{self.__class__.__name__}(num symbols={self.num_symbols} | {self.stats})"
-        # TODO: note, can add more params like bw, sf, etc but would require a .load()
 
     def __getitem__(self, item):
         return self.data.__getitem__(item)
@@ -36,6 +37,17 @@ class BaselineSymbolSet:
 
     def __delitem__(self, item):
         return self.data.__delitem__(item)
+
+
+    def convolve(self, baseline: np.array) -> float:
+        symbol, symbol_conj = self.data, self.conj_data
+        baseline = baseline[0: self.stats.samp_per_sym]
+
+        conv_val = self._conv.convolve_symbols(baseline, symbol, symbol_conj, _max=True)
+
+        logger.debug(f'convolved symbol with baseline: {conv_val}')
+        return conv_val
+
 
     @property
     def size(self):
