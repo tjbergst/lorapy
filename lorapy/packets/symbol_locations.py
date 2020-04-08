@@ -52,20 +52,20 @@ class SymbolLocator:
 
 
     def _locate_symbols(self, samp_per_sym: int, range_factor: int, step: int) -> list:
-        corr_vals = self._compute_correlation_values(samp_per_sym, range_factor, step)
-
-
-
-    def _compute_correlation_values(self, samp_per_sym: int, range_factor: int, step: int) -> list:
         shifts = self._sym_utils.generate_shifts(samp_per_sym, range_factor, step)
 
+        corr_vals = self._compute_correlation_values(samp_per_sym, shifts)
+
+
+
+    def _compute_correlation_values(self, samp_per_sym: int, shifts: range) -> list:
         correlations = self._sym_utils.shift_and_correlate(
             self.symbol_data, self.packet_data, samp_per_sym, shifts,
         )
 
         if self._dev:
             plt.plot(correlations);
-            plt.title(f'samp per sym: {samp_per_sym} | range factor: {range_factor} | step: {step}');
+            plt.title(f'{self.packet.stats}');
             plt.show();
 
         return correlations
