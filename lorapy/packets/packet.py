@@ -9,14 +9,19 @@ import matplotlib.pyplot as plt
 
 from lorapy.common import exceptions as exc
 from lorapy.common import constants
+from lorapy.common.utils import validate_str_option
 from lorapy.common.stats import LoraStats  # TODO: circ import issue
 from lorapy.packets._base_packet import BaseLoraPacket
-from lorapy.symbols.symbol import LoraSymbol
+from lorapy.packets.symbol_locations import SymbolLocator
 from lorapy.symbols import utils as sym_utils
+from lorapy.symbols.symbol import LoraSymbol
+from lorapy.symbols.baseline import BaselineSymbolSet
 
 
 
 class LoraPacket(BaseLoraPacket):
+
+    _adjust_options = ('biased-mean', 'symbol-correlation')
 
     _auto_adj_look_ahead = 10
     _auto_adj_threshold = 0.5
@@ -26,6 +31,9 @@ class LoraPacket(BaseLoraPacket):
     _downgrade_overadj_error = True
 
     _sym_utils = sym_utils
+    _sym_locate_range_factor = 10
+    _sym_locate_step = 2
+    _sym_locate_scalar = 0.6
 
     def __init__(self, data: np.array, stats: LoraStats,
                  packet_id: int, endpoints: ty.Tuple[int, int], auto_adjust: bool=True):
@@ -37,6 +45,12 @@ class LoraPacket(BaseLoraPacket):
         self.endpoint_list: ty.List[ty.Tuple[int, int]] = []
         self._raw_symbols: np.ndarray = np.empty((1, 1))
         self.symbols: ty.List[LoraSymbol] = []
+
+        # symbol locator
+        self._locator = SymbolLocator(
+            self, self._sym_locate_range_factor, self._sym_locate_step, self._sym_locate_scalar,
+            dev=True,
+        )
 
         # packet adjusting
         if auto_adjust:
@@ -66,6 +80,15 @@ class LoraPacket(BaseLoraPacket):
         return self._check_over_adjustment(adjustment) if check else adjustment
 
 
+    def get_adjustment_by_symbol_correlation(self, baseline_symbol: BaselineSymbolSet,
+                                             range_factor: ty.Optional[int]=None,
+                                             step: ty.Optional[int]=None,
+                                             scalar: ty.Optional[int]=None):
+        peak_shifts = self._locator.locate_symbols(baseline_symbol, range_factor, step, scalar)
+        logger.info(f'found first peak shift at {peak_shifts[0]}')
+        return peak_shifts[0]
+
+
     def biased_mean(self, bias: float=0.7) -> float:
         biased_max = bias * self.max
         biased_packet = self.real_abs_data[np.where(self.real_abs_data > biased_max)]
@@ -77,11 +100,28 @@ class LoraPacket(BaseLoraPacket):
         return biased_packet.mean()
 
 
-    def auto_adjust(self, look_ahead: ty.Optional[int]=None, threshold: ty.Optional[float]=None) -> None:
-        """ auto adjust, option to override class attr params here """
-        look_ahead = self._auto_adj_look_ahead if look_ahead is None else look_ahead
-        threshold = self._auto_adj_threshold if threshold is None else threshold
-        adjustment = self.get_adjustment(look_ahead, threshold)
+    def auto_adjust(self, adjust_type: str='biased-mean', **kwargs) -> None:
+        """ auto adjust, option to override class attr params here
+
+        symbol correlation kwargs:
+            baseline_symbol: BaselineSymbolSet *required*
+            range_factor: ty.Optional[int]=None
+            step: ty.Optional[int]=None
+            scalar: ty.Optional[int]=None
+
+        biased mean kwargs:
+            look_ahead: int=100
+            threshold: float=0.5
+        """
+        adjust_type = validate_str_option(adjust_type, self._adjust_options)
+
+        if adjust_type == 'biased-mean':
+            adjustment = self.get_adjustment(**kwargs)
+        elif adjust_type == 'symbol-correlation':
+            if 'baseline_symbol' not in kwargs:
+                raise ValueError(f'`baseline_symbol` required arg for symbol correlation')
+            adjustment = self.get_adjustment_by_symbol_correlation(**kwargs)
+
         self.adjustment = self._check_over_adjustment(adjustment)
 
 
