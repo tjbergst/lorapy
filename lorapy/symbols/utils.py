@@ -56,13 +56,16 @@ def _compute_corrcoefs(base_symbol: np.ndarray, packet_slice: np.ndarray) -> flo
     ))
 
 
-def find_first_peak(corr_vals: list, threshold: float, shifts: range):
+def find_peaks(corr_vals: list, threshold: float,
+               shifts: range, first: bool=True) -> ty.Union[list, int]:
     # noinspection PyTypeChecker
     peaks = np.where(corr_vals > threshold)[0]
     logger.debug(f'found {len(peaks)} peaks [{peaks[0]}]')
 
-    shift = list(shifts)[peaks[0]]
-    return shift
+    shifts = list(shifts)
+    peak_shifts = [shifts[peak] for peak in peaks]
+
+    return peak_shifts[0] if first else peak_shifts
 
 
 def determine_max_correlation_shift(corr_vals: list, shifts: range) -> int:
