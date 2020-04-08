@@ -15,7 +15,7 @@ class SymbolLocator:
 
     _sym_utils = utils
 
-    def __init__(self, packet: LoraPacket, range_factor: int=10, step: int=2, dev: bool=True):
+    def __init__(self, packet: LoraPacket, range_factor: int=10, step: int=2, scalar: float=0.6, dev: bool=True):
 
         self._dev = dev
 
@@ -24,6 +24,7 @@ class SymbolLocator:
         # TODO: add variable steps per BW in constants?
         self._range_factor = range_factor
         self._step = step
+        self._scalar = scalar
 
         self.symbol = None
 
@@ -38,7 +39,8 @@ class SymbolLocator:
 
 
     def locate_symbols(self, baseline_symbol: BaselineSymbolSet, preamble_only: bool=True,
-                       range_factor: ty.Optional[int]=None, step: ty.Optional[int]=None) -> list:
+                       range_factor: ty.Optional[int]=None, step: ty.Optional[int]=None,
+                       scalar: ty.Optional[int]=None) -> list:
         if not preamble_only:
             raise NotImplementedError('only preamble symbol location implemented at this time')
 
@@ -46,15 +48,18 @@ class SymbolLocator:
         self.symbol = baseline_symbol
         range_factor = range_factor if range_factor is not None else self._range_factor
         step = step if step is not None else self._step
+        scalar = scalar if scalar is not None else self._scalar
+
         samp_per_sym = self.packet.stats.samp_per_sym
 
-        return self._locate_symbols(samp_per_sym, range_factor, step)
+        return self._locate_symbols(samp_per_sym, range_factor, step, scalar)
 
 
-    def _locate_symbols(self, samp_per_sym: int, range_factor: int, step: int) -> list:
+    def _locate_symbols(self, samp_per_sym: int, range_factor: int, step: int, scalar: float=0.6) -> list:
         shifts = self._sym_utils.generate_shifts(samp_per_sym, range_factor, step)
 
         corr_vals = self._compute_correlation_values(samp_per_sym, shifts)
+        corr_threshold = self._sym_utils.set_corr_threshold(corr_vals, scalar)
 
 
 
