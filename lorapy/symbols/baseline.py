@@ -7,6 +7,7 @@ import typing as ty
 
 from lorapy.utils import misc as misc_utils
 from lorapy.symbols import convolution
+from lorapy.symbols.symbol import LoraSymbol
 # from lorapy.datafile.file import DotPFile  # TODO: circ import issue
 
 
@@ -39,13 +40,13 @@ class BaselineSymbolSet:
         return self.data.__delitem__(item)
 
 
-    def convolve(self, baseline: np.array) -> float:
-        symbol, symbol_conj = self.data, self.conj_data
-        baseline = baseline[0: self.stats.samp_per_sym]
+    def convolve(self, packet_slice: np.ndarray) -> float:
+        symbol, symbol_conj = packet_slice, np.conj(packet_slice[::-1])
+        baseline = self.data
 
         conv_val = self._conv.convolve_symbols(baseline, symbol, symbol_conj, _max=True)
 
-        logger.debug(f'convolved symbol with baseline: {conv_val}')
+        # logger.debug(f'convolved symbol with baseline: {conv_val}')
         return conv_val
 
 
