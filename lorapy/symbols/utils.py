@@ -32,3 +32,48 @@ def _slice_symbol(data: np.array, endpoints: ty.Tuple[int, int]) -> np.array:
     _slice = data[start:stop]
 
     return _slice
+
+
+# -------------------------------- symbol locating --------------------------------
+
+
+
+def _shift_and_correlate(base_symbol: np.ndarray, packet: np.ndarray, samp_per_sym: int, shifts: range) -> list:
+    corr_vals = [
+        _compute_corrcoefs(base_symbol, packet[shift: shift + samp_per_sym - 1])
+        for shift in shifts
+    ]
+
+    return corr_vals
+
+
+def _compute_corrcoefs(base_symbol: np.ndarray, packet_slice: np.ndarray) -> float:
+    return np.real(np.abs(
+        np.corrcoef(base_symbol, packet_slice)[0, 1]
+    ))
+
+
+def _find_first_peak(corr_vals: list, threshold: float, shifts: range):
+    # noinspection PyTypeChecker
+    peaks = np.where(corr_vals > threshold)[0]
+    logger.debug(f'found {len(peaks)} peaks [{peaks[0]}]')
+
+    shift = list(shifts)[peaks[0]]
+    return shift
+
+
+def _determine_max_correlation_shift(corr_vals: list, shifts: range) -> int:
+    # noinspection PyTypeChecker
+    argmax: int = np.argmax(corr_vals)
+    return list(shifts)[argmax]
+
+
+def set_corr_threshold(corr_vals: list, scalar: float = 0.6):
+    threshold = np.max(corr_vals) * scalar
+    return threshold
+
+
+def _generate_shifts(samples_per_sym: int,
+                     range_factor: int = 10, step: int = 2) -> range:
+    return range(0, int(samples_per_sym * range_factor), step)
+
