@@ -6,10 +6,13 @@ import typing as ty
 
 from lorapy.symbols.baseline import BaselineSymbolSet
 from lorapy.packets.packet import LoraPacket
+from lorapy.symbols import utils
 
 
 
 class SymbolLocator:
+
+    _sym_utils = utils
 
     _range_factor = 10
 
