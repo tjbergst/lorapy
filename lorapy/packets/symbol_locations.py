@@ -1,6 +1,5 @@
 # lora packet syncer via symbol convolution
 
-from loguru import logger
 import numpy as np
 import typing as ty
 import matplotlib.pyplot as plt
