@@ -37,6 +37,9 @@ def _slice_symbol(data: np.array, endpoints: ty.Tuple[int, int]) -> np.array:
 # -------------------------------- symbol locating --------------------------------
 
 
+def generate_shifts(samples_per_sym: int, range_factor: int = 10, step: int = 2) -> range:
+    return range(0, int(samples_per_sym * range_factor), step)
+
 
 def shift_and_correlate(base_symbol: np.ndarray, packet: np.ndarray, samp_per_sym: int, shifts: range) -> list:
     corr_vals = [
@@ -71,8 +74,4 @@ def determine_max_correlation_shift(corr_vals: list, shifts: range) -> int:
 def set_corr_threshold(corr_vals: list, scalar: float = 0.6):
     threshold = np.max(corr_vals) * scalar
     return threshold
-
-
-def generate_shifts(samples_per_sym: int, range_factor: int = 10, step: int = 2) -> range:
-    return range(0, int(samples_per_sym * range_factor), step)
 
