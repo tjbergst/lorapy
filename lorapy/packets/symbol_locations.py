@@ -62,8 +62,8 @@ class SymbolLocator:
         corr_threshold = self._sym_utils.set_corr_threshold(corr_vals, scalar)
 
         peak_shifts = self._sym_utils.find_peak_shifts(corr_vals, corr_threshold, shifts, first=False)
+        self._create_sanity_plot(corr_vals, peak_shifts)
         return peak_shifts
-
 
 
     def _compute_correlation_values(self, samp_per_sym: int, shifts: range) -> list:
@@ -78,5 +78,20 @@ class SymbolLocator:
 
         return correlations
 
+
+    def _create_sanity_plot(self, corr_vals: list, peak_shifts: list) -> None:
+        if not self._dev:
+            return
+
+        # creates a list of spikes at peak shift locations
+        packet_strips = [
+            np.max(corr_vals) * 1.2 if idx in peak_shifts else 0
+            for idx, _ in enumerate([0] * len(corr_vals))
+        ]
+
+        plt.plot(corr_vals);
+        plt.plot(packet_strips);
+        plt.title(f'symbol location overlay');
+        plt.show();
 
 
