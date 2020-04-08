@@ -3,6 +3,7 @@
 from loguru import logger
 import numpy as np
 import typing as ty
+import matplotlib.pyplot as plt
 
 # TODO: commonalize? packet slicing and symbol slicing
 
@@ -57,10 +58,12 @@ def _compute_corrcoefs(base_symbol: np.ndarray, packet_slice: np.ndarray) -> flo
 
 
 def find_peak_shifts(corr_vals: list, threshold: float,
-                     shifts: range, first: bool=True) -> ty.Union[list, int]:
+                     shifts: range, first: bool=True, sanity_plot: bool=False) -> ty.Union[list, int]:
     # noinspection PyTypeChecker
     peaks = np.where(corr_vals > threshold)[0]
-    logger.debug(f'found {len(peaks)} peaks [{peaks[0]}]')
+    logger.debug(f'found {len(peaks)} peaks [{peaks}]')
+    if sanity_plot:
+        _sanity_plot(corr_vals, peaks)
 
     shifts = list(shifts)
     peak_shifts = [shifts[peak] for peak in peaks]
@@ -78,3 +81,14 @@ def set_corr_threshold(corr_vals: list, scalar: float = 0.6):
     threshold = np.max(corr_vals) * scalar
     return threshold
 
+
+def _sanity_plot(corr_vals: list, peak_corrs: list) -> None:
+    packet_strips = [
+        np.max(corr_vals) * 1.1 if idx in peak_corrs else 0
+        for idx, _ in enumerate([0] * len(corr_vals))
+    ]
+
+    plt.plot(corr_vals);
+    plt.plot(packet_strips);
+    plt.title(f'symbol location overlay');
+    plt.show();
