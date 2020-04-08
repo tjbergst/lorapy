@@ -100,7 +100,7 @@ class LoraPacket(BaseLoraPacket):
         return biased_packet.mean()
 
 
-    def auto_adjust(self, adjust_type: str='biased-mean', **kwargs) -> None:
+    def auto_adjust(self, adjust_type: str='symbol-correlation', **kwargs) -> None:
         """ auto adjust, option to override class attr params here
 
         symbol correlation kwargs:
@@ -113,6 +113,7 @@ class LoraPacket(BaseLoraPacket):
             look_ahead: int=100
             threshold: float=0.5
         """
+
         adjust_type = validate_str_option(adjust_type, self._adjust_options)
 
         if adjust_type == 'biased-mean':
