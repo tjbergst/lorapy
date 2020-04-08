@@ -61,6 +61,9 @@ class SymbolLocator:
         corr_vals = self._compute_correlation_values(samp_per_sym, shifts)
         corr_threshold = self._sym_utils.set_corr_threshold(corr_vals, scalar)
 
+        peak_shifts = self._sym_utils.find_peak_shifts(corr_vals, corr_threshold, shifts, first=False)
+        return peak_shifts
+
 
 
     def _compute_correlation_values(self, samp_per_sym: int, shifts: range) -> list:
