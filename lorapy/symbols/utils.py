@@ -73,7 +73,6 @@ def set_corr_threshold(corr_vals: list, scalar: float = 0.6):
     return threshold
 
 
-def generate_shifts(samples_per_sym: int,
-                     range_factor: int = 10, step: int = 2) -> range:
+def generate_shifts(samples_per_sym: int, range_factor: int = 10, step: int = 2) -> range:
     return range(0, int(samples_per_sym * range_factor), step)
 
