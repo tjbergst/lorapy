@@ -52,8 +52,10 @@ def shift_and_correlate(base_symbol: np.ndarray, packet: np.ndarray, samp_per_sy
 
 
 def _compute_corrcoefs(base_symbol: np.ndarray, packet_slice: np.ndarray) -> float:
+    min_size = np.min((base_symbol.size, packet_slice.size))
+
     return np.real(np.abs(
-        np.corrcoef(base_symbol, packet_slice)[0, 1]
+        np.corrcoef(base_symbol[:min_size], packet_slice[:min_size])[0, 1]
     ))
 
 
@@ -61,7 +63,7 @@ def find_peak_shifts(corr_vals: list, threshold: float,
                      shifts: range, first: bool=True, sanity_plot: bool=False) -> ty.Union[list, int]:
     # noinspection PyTypeChecker
     peaks = np.where(corr_vals > threshold)[0]
-    logger.debug(f'found {len(peaks)} peaks [{peaks}]')
+    # logger.debug(f'found {len(peaks)} peaks [{peaks}]')
     if sanity_plot:
         _sanity_plot(corr_vals, peaks)
 
