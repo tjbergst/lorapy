@@ -5,7 +5,7 @@ import typing as ty
 import matplotlib.pyplot as plt
 
 from lorapy.symbols.baseline import BaselineSymbolSet
-from lorapy.packets.packet import LoraPacket
+# from lorapy.packets.packet import LoraPacket  # TODO: circ import issue
 from lorapy.symbols import utils
 
 
@@ -14,7 +14,7 @@ class SymbolLocator:
 
     _sym_utils = utils
 
-    def __init__(self, packet: LoraPacket, range_factor: int=10, step: int=2, scalar: float=0.6, dev: bool=True):
+    def __init__(self, packet: 'LoraPacket', range_factor: int=10, step: int=2, scalar: float=0.6, dev: bool=True):
         """
         Finds lora preamble symbols by computing the correlation with a baseline symbol along
         a sliding window of packet data. Tunable params are discussed below.
