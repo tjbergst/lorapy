@@ -88,7 +88,7 @@ class LoraPacket(BaseLoraPacket):
                                              step: ty.Optional[int]=None,
                                              scalar: ty.Optional[int]=None):
         peak_shifts = self._locator.locate_symbols(baseline_symbol, range_factor, step, scalar)
-        logger.info(f'found first peak shift at {peak_shifts[0]}')
+        # logger.info(f'found first peak shift at {peak_shifts[0]}')
         return peak_shifts[0]
 
 
