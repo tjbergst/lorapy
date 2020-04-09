@@ -49,7 +49,7 @@ class LoraPacket(BaseLoraPacket):
         # symbol locator
         self._locator = SymbolLocator(
             self, self._sym_locate_range_factor, self._sym_locate_step, self._sym_locate_scalar,
-            dev=True,
+            dev=False,
         )
 
         # packet adjusting
