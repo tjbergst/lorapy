@@ -65,12 +65,13 @@ class LoraSignal(BaseLoraSignal):
             self.adjust_packets()
 
 
-    def adjust_packets(self, force_check: bool=False,
-                       look_ahead: ty.Optional[int]=None, threshold: ty.Optional[float]=None) -> None:
-        """ adjusts packets based LoraPacket.adjustment, option to force adjustment check per packet """
+    def adjust_packets(self, force_check: bool=False, **kwargs) -> None:
+        """ adjusts packets based LoraPacket.adjustment, option to force adjustment check per packet
+            see LoraPacket.auto_adjust docstring for kwarg options
+        """
 
         if force_check:
-            _ = [packet.auto_adjust(look_ahead, threshold) for packet in self.packets]
+            _ = [packet.auto_adjust(**kwargs) for packet in self.packets]
 
         self._adjust_endpoints()
         self._slice_and_load(_auto_adj=False)
