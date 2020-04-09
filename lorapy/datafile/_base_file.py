@@ -55,10 +55,11 @@ class BaseDataFile:
         return self._datafile_class(self)
 
 
-    def load(self) -> None:
+    def load(self):
         self._compute_file_params()
         self.data = self._load_file()
         logger.info(f'loaded {self.size} samples from file')
+        return self
 
 
     def _compute_file_params(self) -> None:
