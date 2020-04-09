@@ -46,6 +46,9 @@ class LoraPacket(BaseLoraPacket):
         self._raw_symbols: np.ndarray = np.empty((1, 1))
         self.symbols: ty.List[LoraSymbol] = []
 
+        # dev
+        self._preamble_window: np.ndarray = np.empty(0)
+
         # symbol locator
         self._locator = SymbolLocator(
             self, self._sym_locate_range_factor, self._sym_locate_step, self._sym_locate_scalar,
@@ -147,6 +150,14 @@ class LoraPacket(BaseLoraPacket):
         self.endpoint_list = self._sym_utils.gen_preamble_endpoints(num_symbols, samp_per_sym)
 
         self._slice_and_load()
+
+
+    def extract_preamble_window(self):
+        num_symbols, samp_per_sym = self.stats.const.num_symbols, self.stats.samp_per_sym
+        self.endpoint_list = self._sym_utils.gen_preamble_endpoints(num_symbols, samp_per_sym)
+
+        start, stop = self.endpoint_list[0][0], self.endpoint_list[-1][-1] + 4 * self.stats.samp_per_sym
+        self._preamble_window = np.array(self.data[start: stop])
 
 
     def _slice_and_load(self) -> None:
