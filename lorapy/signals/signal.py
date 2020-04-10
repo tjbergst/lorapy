@@ -1,12 +1,15 @@
 # lora signal
 
-
+import os
 from loguru import logger
 import numpy as np
 import copy
+import multiprocessing
+from functools import partial
 import typing as ty
 import matplotlib.pyplot as plt
 
+import lorapy
 from lorapy.common.utils import validate_str_option
 from lorapy.signals._base_signal import BaseLoraSignal
 from lorapy.signals.processing.sliding_mean import find_all_mindices
@@ -71,7 +74,13 @@ class LoraSignal(BaseLoraSignal):
         """
 
         if force_check:
-            _ = [packet.auto_adjust(**kwargs) for packet in self.packets]
+            if os.getenv('MULTIPROC'):
+                logger.warning(f'multiprocessing packet adjustment..')
+                with multiprocessing.Pool() as pool:
+                    pool.imap_unordered(partial(_mp_auto_adjust, **kwargs), self.packets)
+
+            else:
+                _ = [packet.auto_adjust(**kwargs) for packet in self.packets]
 
         self._adjust_endpoints()
         self._slice_and_load(_auto_adj=False)
@@ -148,3 +157,9 @@ class LoraSignal(BaseLoraSignal):
     def _plot_packet(self, _real: bool, _packet_num: ty.Optional[int]=None, **kwargs) -> None:
         _packet = self.packets[_packet_num] if _packet_num is not None else self.random_packet
         return _packet.plot(_real, **kwargs)
+
+
+
+def _mp_auto_adjust(packet, **kwargs):
+    packet.auto_adjust(**kwargs)
+
