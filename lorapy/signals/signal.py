@@ -161,5 +161,6 @@ class LoraSignal(BaseLoraSignal):
 
 
 def _mp_auto_adjust(packet, **kwargs):
+    logger.info(f'adjusting packet {packet.pid}')
     packet.auto_adjust(**kwargs)
 
